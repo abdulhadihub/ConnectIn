@@ -10,6 +10,23 @@ const userScheme = mongoose.Schema({
     dateOfBirth: String,
     gender: String,
     phone: String,
+    profileImage: String,
+    country: String,
+    city: String,
+    cover: String,
+    followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    posts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post'
+        }
+    ],
+    interests: [String],
 }, {
     timestamps: true
 }

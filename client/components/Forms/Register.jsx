@@ -8,58 +8,44 @@ import {
     Form,
     Select,
     Input,
-    DatePicker
+    DatePicker,
+    notification
 } from 'antd';
-const formItemLayout = {
-    labelCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 8,
-        },
-    },
-    wrapperCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 16,
-        },
-    },
-};
+import { useRouter } from 'next/navigation';
 
-
-const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 8,
-        },
-    },
-};
 const App = () => {
     const [form] = Form.useForm();
-    const onFinish = (values) => {
+    const route = useRouter();
+    const onFinish = async(values) => {
         console.log('Received values of form: ', values);
-        axios.post(`${server}/api/user/register`, values).then((res) => {
-            console.log(res);
-        });
+        try {
+            const res = await axios.post(`${server}/api/user/register`, values);
+            if (res?.data?.success) {
+                notification.success({
+                    message: 'Success',
+                    description: res?.data?.message,
+                });
+                form.resetFields();
+                route.push('/login');
+            }else{
+                notification.error({
+                    message: 'Error',
+                    description: res?.data?.message,
+                });
+            }
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: error?.response?.data?.message,
+            });
+        }
     };
     return (
         <Form
-            {...formItemLayout}
+            layout="vertical"
             form={form}
             name="register"
             onFinish={onFinish}
-            initialValues={{
-                residence: ['zhejiang', 'hangzhou', 'xihu'],
-                prefix: '86',
-            }}
             style={{
                 maxWidth: 600,
             }}
@@ -76,7 +62,7 @@ const App = () => {
                     },
                 ]}
             >
-                <Input defaultValue="John" />
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -89,7 +75,7 @@ const App = () => {
                     },
                 ]}
             >
-                <Input defaultValue="Doe" />
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -102,7 +88,7 @@ const App = () => {
                     },
                 ]}
             >
-                <DatePicker />
+                <DatePicker className='w-[100%]' />
             </Form.Item>
 
             <Form.Item
@@ -136,7 +122,7 @@ const App = () => {
                     },
                 ]}
             >
-                <Input defaultValue="user1@gmail.com" />
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -153,7 +139,6 @@ const App = () => {
                     style={{
                         width: '100%',
                     }}
-                    defaultValue="1234567890"
                 />
             </Form.Item>
 
@@ -168,7 +153,7 @@ const App = () => {
                 ]}
                 hasFeedback
             >
-                <Input.Password defaultValue="45" />
+                <Input.Password />
             </Form.Item>
 
             <Form.Item
@@ -191,10 +176,10 @@ const App = () => {
                     }),
                 ]}
             >
-                <Input.Password defaultValue="45" />
+                <Input.Password  />
             </Form.Item>
 
-            <Form.Item {...tailFormItemLayout}>
+            <Form.Item>
                 <Button type="primary" htmlType="submit" className='w-full rounded-full'>
                     Register
                 </Button>

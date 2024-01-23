@@ -35,7 +35,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     try {
         const prev = await User.findOne({ email })
         if (prev) {
-            res.status(400).json({ message: "User with this Email, Already Exists!" })
+            res.status(400).json({ message: "User with this Email, Already Exists!", success: false })
         } else {
             const user = await User.create({
                 fName,
@@ -46,7 +46,6 @@ export const registerUser = asyncHandler(async (req, res) => {
                 phone,
                 password: hashedPassword
             })
-            console.log("registerUser")
             await user.save();
             res.status(201).json({ message: "Registered Successfully!", success: true })
         }
