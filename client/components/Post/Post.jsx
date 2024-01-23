@@ -1,11 +1,15 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { postImages } from '@/utils/data'
 import { PiThumbsUpThin } from "react-icons/pi";
 import { FaRegCommentDots } from "react-icons/fa6";
 import Options from '@/components/Options/Options'
+import Comment from '@/components/Post/Comment'
 
 function Post() {
+    const [showComment, setShowComment] = useState(false)
+
     return (
         <div className='bg-white shadow-md rounded-md p-3 relative '>
             <div className='absolute top-0 right-0'>
@@ -35,17 +39,29 @@ function Post() {
 
             <div className='mt-5'>
                 <div className='flex justify-between items-center'>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 cursor-pointer'>
                         <PiThumbsUpThin className='text-xl text-gray-500' />
                         <p className='text-gray-500'>Like 12</p>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div onClick={() => setShowComment(!showComment)} className='flex items-center gap-2 cursor-pointer'>
                         <FaRegCommentDots className='text-xl text-gray-500' />
                         <p className='text-gray-500'>Comment 3</p>
                     </div>
                 </div>
-
             </div>
+
+            {
+                showComment && (
+                    <div>
+
+                        <div className='flex mt-5'>
+                            <Image src='/user.jpg' width={30} height={30} className='rounded-full mr-3' />
+                            <input type="text" placeholder='Add a comment...' className='w-full outline-none border border-gray-500 rounded-full px-5 py-2' />
+                        </div>
+                        <Comment />
+                    </div>
+                )
+            }
         </div>
     )
 }
