@@ -6,16 +6,20 @@ import Link from 'next/link';
 import axios from 'axios';
 import server from '@/utils/server';
 import { useCookies } from "react-cookie";
-
+import { useUser } from '@/utils/Context/UserContext';
+import { useRouter } from 'next/navigation';
 
 const App = () => {
     //eslint-disable-next-line
     const [cookies, setCookie] = useCookies(["x-auth-token"]);
+    const { updateUser } = useUser();
+    const route = useRouter();
     const onFinish = async (values) => {
         console.log('Received values of form: ', values);
         try {
             const res = await axios.post(`${server}/api/user/login`, values);
             if (res?.data?.success) {
+                updateUser(res?.data?.user);
                 notification.success({
                     message: 'Success',
                     description: res?.data?.message,
@@ -25,7 +29,7 @@ const App = () => {
                     maxAge: 3600, // Expires after 1hr
                     sameSite: true,
                 });
-                // route.push('/feed');
+                route.push('/feed');
             } else {
                 notification.error({
                     message: 'Error',
