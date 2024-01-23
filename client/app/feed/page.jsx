@@ -10,7 +10,7 @@ function page() {
     const { user } = useUser();
     return (
         <>
-            <div className='grid grid-cols-12 mt-10 bg-[#f4f2ee] gap-5'>
+            <div className='grid grid-cols-12 py-5 bg-[#f4f2ee] gap-5'>
                 <div className='col-span-2'>
                     <UserWidget />
                 </div>

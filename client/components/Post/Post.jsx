@@ -12,7 +12,7 @@ function Post() {
 
     return (
         <div className='bg-white shadow-md rounded-md p-3 relative '>
-            <div className='absolute top-0 right-0'>
+            <div className='absolute top-5 right-5'>
                 <Options />
             </div>
             <div className='flex'>

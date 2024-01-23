@@ -4,7 +4,7 @@ import Suggestion from '@/components/SuggestionsWidget/Suggestion'
 
 function SuggestionsWidget() {
     return (
-        <div className='bg-white shadow-md rounded-md p-5'>
+        <div className='bg-white shadow-md rounded-md p-5 mx-5'>
             <h2 className='font-semibold'>Add to your feed</h2>
             <div className='flex flex-col gap-3 mt-5'>
                 <Suggestion />
