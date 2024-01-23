@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import multer from 'multer';
 import fs from 'fs'
 import user from './routes/user.js'
+import post from './routes/post.js'
 
 
 dotenv.config()
@@ -60,6 +61,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/user', user)
+app.use('/api/post', post)
 
 
 

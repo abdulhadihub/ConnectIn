@@ -31,7 +31,7 @@ export const getPost = asyncHandler(async (req, res) => {
       }
 })
 
-const getPosts = asyncHandler(async (req, res) => {
+export const getPosts = asyncHandler(async (req, res) => {
     try {
         const posts = await Post.find()
             .populate('user', '_id email profilePicture')
