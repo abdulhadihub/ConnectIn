@@ -3,6 +3,10 @@ const postScheme = mongoose.Schema({
     title: String,
     description: String,
     postImage: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -41,8 +45,11 @@ const postScheme = mongoose.Schema({
             ]
         }
     ],
-    isEdited: Boolean,
-    topics: [String],
+    isEdited: {
+        type: Boolean,
+        default: false
+    },
+    interests: [String],
 }, {
     timestamps: true
 }
