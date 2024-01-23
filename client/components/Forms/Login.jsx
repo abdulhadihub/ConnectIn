@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 
 const App = () => {
     //eslint-disable-next-line
-    const [cookies, setCookie] = useCookies(["x-auth-token"]);
+    const [cookies, setCookie] = useCookies(["user", "x-auth-token"]);
     const { updateUser } = useUser();
     const route = useRouter();
     const onFinish = async (values) => {
@@ -25,6 +25,11 @@ const App = () => {
                     description: res?.data?.message,
                 });
                 setCookie("x-auth-token", res?.data?.token, {
+                    path: "/",
+                    maxAge: 3600, // Expires after 1hr
+                    sameSite: true,
+                });
+                setCookie("user", res?.data?.user, {
                     path: "/",
                     maxAge: 3600, // Expires after 1hr
                     sameSite: true,

@@ -2,22 +2,30 @@
 import { useUser } from "@/utils/Context/UserContext";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
+import { useCookies } from 'react-cookie';
 
 
 export default function isAuth(Component) {
     return function isAuth(props) {
-        const { user } = useUser();
-        const auth = user;
+        const [cookies] = useCookies(['user']);
+        const { user, updateUser } = useUser();
 
 
         useEffect(() => {
-            if (!auth) {
-                return redirect("/login");
+
+            if (!user) {
+                if (cookies?.user) {
+                    console.log(cookies.user)
+                    updateUser(cookies?.user);
+                }
+                else {
+                    return redirect("/login");
+                }
             }
         }, []);
 
 
-        if (!auth) {
+        if (!user) {
             return null;
         }
 

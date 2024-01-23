@@ -8,7 +8,6 @@ import isAuth from '@/components/isAuth/isAuth'
 
 function page() {
     const { user } = useUser();
-    console.log(user)
     return (
         <>
             <div className='grid grid-cols-12 mt-10 bg-[#f4f2ee] gap-5'>

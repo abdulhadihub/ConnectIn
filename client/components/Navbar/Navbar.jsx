@@ -9,7 +9,6 @@ function Navbar() {
                 <h2>ConnectIn</h2>
                 <IoMdHome />
                 <div>
-
                     <UserDropdown />
                 </div>
             </div>
