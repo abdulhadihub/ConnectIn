@@ -42,15 +42,15 @@ const Profile = () => {
   };
   useEffect(() => {
     const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768); // Adjust the breakpoint as per your needs
+      setIsMobile(window.innerWidth <= 768); // Adjust the breakpoint as per your needs
     };
 
     handleResize(); // Check initially
     window.addEventListener('resize', handleResize);
     return () => {
-        window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleResize);
     };
-}, []);
+  }, []);
 
 
   const postsData = [{
@@ -127,11 +127,11 @@ const Profile = () => {
   const currentPosts = postsData?.slice(startIndex, endIndex);
   const PostList = ({ posts }) => {
     return (
-      <div className={`grid ${isMobile ?"grid-cols-1":"grid-cols-2"} gap-7 my-3`}>
+      <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"} gap-7 my-3`}>
         {posts.length > 0 ? posts.map((post, index) => (
           <PostItem key={index} data={post} />
         )) : <div>No Post</div>}
-        {!isMobile && posts?.length!==0 && currentPosts.length < 2 && <div style={{ border: "1px solid grey" }} className=' flex justify-center items-center rounded-lg'>
+        {!isMobile && posts?.length !== 0 && currentPosts.length < 2 && <div style={{ border: "1px solid grey" }} className=' flex justify-center items-center rounded-lg'>
           <div className='text-center'>
             <FaSwatchbook color='blue' size={30} />
             <div className='text-gray-300'>

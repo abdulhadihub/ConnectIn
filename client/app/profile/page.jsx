@@ -1,5 +1,7 @@
+'use client'
 import Profile from '@/components/Profile/Profile'
 import React from 'react'
+import isAuth from '@/components/isAuth/IsAuth'
 
 const page = () => {
   return (
@@ -9,4 +11,4 @@ const page = () => {
   )
 }
 
-export default page
+export default isAuth(page)
