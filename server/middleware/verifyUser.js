@@ -11,6 +11,7 @@ export const verifyUser = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = { id: decoded.id };
+        console.log("here",req.user)
         next();
     } catch (error) {
         return res.status(401).json({ message: 'No token, authorization denied' });

@@ -5,30 +5,30 @@ import Post from '../models/postModel.js';
 export const getPost = asyncHandler(async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId)
-          .populate('user', '_id email profilePicture')
-          .populate({
-            path: 'comments',
-            populate: {
-              path: 'user',
-              select: '_id email profilePicture',
-            },
-          });
-    
+            .populate('user', '_id email profilePicture')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: '_id email profilePicture',
+                },
+            });
+
         if (!post) {
-          res.status(404).json({ message: 'Post not found', success: false });
-          return;
+            res.status(404).json({ message: 'Post not found', success: false });
+            return;
         }
-    
+
         const formattedPost = {
-          ...post.toObject(),
-          isLikedByUser: post.likes.includes(req.user._id), // Assuming req.user contains authenticated user information
+            ...post.toObject(),
+            isLikedByUser: post.likes.includes(req.user._id), // Assuming req.user contains authenticated user information
         };
-    
+
         res.json(formattedPost);
-      } catch (err) {
+    } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error getting post' });
-      }
+    }
 })
 
 export const getPosts = asyncHandler(async (req, res) => {
@@ -109,12 +109,13 @@ export const getPostsByMyInterests = asyncHandler(async (req, res) => {
 
 export const createPost = asyncHandler(async (req, res) => {
     try {
-        const { description, postImage, topics } = req.body;
+        const { title, description, postImage, interests } = req.body;
         const post = new Post({
+            title,
             description,
             postImage,
-            topics,
-            user: req.user._id,
+            interests,
+            user: req?.user?.id,
         });
         await post.save();
         res.status(201).json({ message: 'Post created Successfully!', success: true });

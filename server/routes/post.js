@@ -4,7 +4,7 @@ import { commentOnPost, createPost, getPost, likePost, getPosts } from "../contr
 
 const router = express.Router();
 
-router.post("/create", createPost);
+router.post("/create",verifyUser, createPost);
 router.put("/like/:postId", verifyUser, likePost);
 router.post("/comment/:postId", verifyUser, commentOnPost);
 router.get("/post", verifyUser, getPosts);

@@ -5,10 +5,12 @@ import { GrGallery } from "react-icons/gr";
 import { IoSendOutline } from "react-icons/io5";
 import axios from 'axios';
 import server from '@/utils/server';
-
+import { useCookies } from 'react-cookie';
 
 const CreatePost = () => {
-    const [image, setImage] = useState('')
+    const [image, setImage] = useState('');
+    //eslint-disable-next-line
+    const [cookies, setCookie, removeCookie] = useCookies(['x-auth-token']);
     const data = {
         user: {
             profileImage: 'https://media.licdn.com/dms/image/D4D03AQFh-x1O7wZkvQ/profile-displayphoto-shrink_400_400/0/1694578053479?e=1711584000&v=beta&t=pGT0uZKUdaN3iC4o6616a2zYpscIAfnogfih8oF_eVE',
@@ -26,28 +28,31 @@ const CreatePost = () => {
             dataa.append("file", image);
             try {
                 await axios.post(`${server}/api/upload`, dataa);
-                values.image = filename;
-                console.log(values)
-                // try {
-                //     const res = await axios.post(`${server}/api/post/create`,values)
-                //     if (res?.data?.success) {
-                //         notification.success({
-                //             message: 'Success',
-                //             description: res?.data?.message,
-                //         })
-                //     } else {
-                //         notification.error({
-                //             message: 'Error',
-                //             description: res?.data?.message,
-                //         })
-                //     }
-                // } catch (error) {
-                //     console.log(error)
-                //     notification.error({
-                //         message: 'Error',
-                //         description: error?.response?.data?.message,
-                //     })
-                // }
+                values.postImage = filename;
+                try {
+                    const res = await axios.post(`${server}/api/post/create`, values, {
+                        headers: {
+                            'x-auth-token': cookies['x-auth-token']
+                        }
+                    })
+                    if (res?.data?.success) {
+                        notification.success({
+                            message: 'Success',
+                            description: res?.data?.message,
+                        })
+                    } else {
+                        notification.error({
+                            message: 'Error',
+                            description: res?.data?.message,
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
+                    notification.error({
+                        message: 'Error',
+                        description: error?.response?.data?.message,
+                    })
+                }
             } catch (err) {
                 console.log(err);
                 notification.error({
