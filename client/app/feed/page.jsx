@@ -12,6 +12,13 @@ function page() {
                 </div>
 
                 <div className='col-span-7 flex flex-col gap-5'>
+                    <div className='flex text-sm justify-end mt-3'>
+
+                        Sort by: <select className='border border-gray-300 rounded-md px-2 py-1 ml-2'>
+                            <option>Top</option>
+                            <option>New</option>
+                        </select>
+                    </div>
                     <Post />
                     <Post />
                 </div>
