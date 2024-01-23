@@ -46,6 +46,7 @@ export const registerUser = asyncHandler(async (req, res) => {
                 phone,
                 password: hashedPassword
             })
+            console.log("registerUser")
             await user.save();
             res.status(201).json({ message: "Registered Successfully!", success: true })
         }
