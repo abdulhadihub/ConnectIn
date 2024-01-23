@@ -11,7 +11,8 @@ function page() {
                     <UserWidget />
                 </div>
 
-                <div className='col-span-7'>
+                <div className='col-span-7 flex flex-col gap-5'>
+                    <Post />
                     <Post />
                 </div>
 

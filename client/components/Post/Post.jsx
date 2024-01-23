@@ -6,7 +6,8 @@ import { FaRegCommentDots } from "react-icons/fa6";
 
 function Post() {
     return (
-        <div className='bg-white shadow-md rounded-md p-3 '>
+        <div className='bg-white shadow-md rounded-md p-3 relative '>
+
             <div className='flex'>
                 <Image src='/user.jpg' width={50} height={50} className='rounded-full mr-3' />
                 <div>
