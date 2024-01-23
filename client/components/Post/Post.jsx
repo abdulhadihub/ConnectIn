@@ -3,11 +3,14 @@ import Image from 'next/image'
 import { postImages } from '@/utils/data'
 import { PiThumbsUpThin } from "react-icons/pi";
 import { FaRegCommentDots } from "react-icons/fa6";
+import Options from '@/components/Options/Options'
 
 function Post() {
     return (
         <div className='bg-white shadow-md rounded-md p-3 relative '>
-
+            <div className='absolute top-0 right-0'>
+                <Options />
+            </div>
             <div className='flex'>
                 <Image src='/user.jpg' width={50} height={50} className='rounded-full mr-3' />
                 <div>
@@ -34,11 +37,11 @@ function Post() {
                 <div className='flex justify-between items-center'>
                     <div className='flex items-center gap-2'>
                         <PiThumbsUpThin className='text-xl text-gray-500' />
-                        <p className='text-gray-500'>Like</p>
+                        <p className='text-gray-500'>Like 12</p>
                     </div>
                     <div className='flex items-center gap-2'>
                         <FaRegCommentDots className='text-xl text-gray-500' />
-                        <p className='text-gray-500'>Comment</p>
+                        <p className='text-gray-500'>Comment 3</p>
                     </div>
                 </div>
 
