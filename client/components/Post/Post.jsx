@@ -30,7 +30,9 @@ function Post({ post }) {
                 setNewComment('')
                 const newCommentObj = {
                     user: currentUser._id,
-                    comment: newComment
+                    comment: newComment,
+                    createdAt: Date.now()
+
                 }
                 let newComments = [...comments]
                 newComments.unshift(newCommentObj)

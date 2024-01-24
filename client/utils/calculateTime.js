@@ -22,8 +22,11 @@ const calculateTime = (date) => {
     else if (minutes > 1) {
         return `${Math.floor(minutes)} minutes ago`;
     }
-    else {
+    else if (seconds > 1) {
         return `${Math.floor(seconds)} seconds ago`;
+    }
+    else {
+        return `now`;
     }
 }
 
