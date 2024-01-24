@@ -14,7 +14,6 @@ import server from '@/utils/server';
 import Link from 'next/link'
 
 function Post({ post }) {
-    console.log(post)
     const [showComment, setShowComment] = useState(false)
     const [comments, setComments] = useState(post?.comments)
     const [newComment, setNewComment] = useState('')
@@ -99,8 +98,8 @@ function Post({ post }) {
                     <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
                 </Link>
                 <div>
-                    <Link href={``} className='text-md'>{user?.fName} {user?.lName}</Link>
-                    <Link href={``} className='text-[12px] text-gray-500'>{user?.useName}</Link>
+                    <Link href={``} className='text-md block'>{user?.fName} {user?.lName}</Link>
+                    <Link href={``} className='block text-[12px] text-black'>@{user?.userName}</Link>
                     <p className='text-[12px] text-gray-500'>{user?.isEdited ? calculateTime(user?.updatedAt) : calculateTime(user?.createdAt)} {user?.isEdited && "• Edited"}</p>
                 </div>
             </div>

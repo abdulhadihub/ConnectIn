@@ -21,7 +21,6 @@ import { IoMdShare } from "react-icons/io";
 import CopyToClipboard from "react-copy-to-clipboard";
 import SuggestionsWidget from '@/components/SuggestionsWidget/SuggestionsWidget';
 
-
 const Profile = ({ user }) => {
   const { updateUser } = useUser();
   //eslint-disable-next-line
@@ -515,15 +514,15 @@ const Profile = ({ user }) => {
             <div className='my-4 bg-white rounded-lg p-2'>
               <div className='flex justify-between items-center px-4 my-2'>
                 <div className='text-xl font-semibold'>Public URL</div>
-                <CopyToClipboard text={`${client}/${user?.userName}`} onCopy={() => handleCopy()}>
+                <CopyToClipboard text={`${client}/profile/${user?.userName}`} onCopy={() => handleCopy()}>
                   <div className='cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full'>
                     <IoMdShare color='gray' size={25} />
                   </div>
                 </CopyToClipboard>
               </div>
               <div className='px-4'>
-                <div className='text-sm text-gray-500'>
-                  <Link className='hover:underline' target='_blank' href={`${client}/${user?.userName || ""}`}>{client}/{user?.userName}</Link>
+                <div className='text-[10px] text-gray-500'>
+                  <Link className='hover:underline' target='_blank' href={`${client}/profile/${user?.userName || ""}`}>{client}/profile/{user?.userName}</Link>
                 </div>
               </div>
             </div>

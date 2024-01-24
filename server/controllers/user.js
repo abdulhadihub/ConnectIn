@@ -164,6 +164,33 @@ export const followUser = asyncHandler(async (req, res) => {
     }
 });
 
+
+export const unfollowUser = asyncHandler(async (req, res) => {
+    try {
+        const { targetUserId } = req.params;
+
+        const user = await User.findById(req.user.id);
+        const targetUser = await User.findById(targetUserId);
+
+        if (!user || !targetUser) {
+            return res.status(404).json({ message: 'User not found', success: false });
+        }
+
+        if (!user.following.includes(targetUserId)) {
+            return res.status(400).json({ message: 'Not following', success: false });
+        }
+
+        await user.updateOne({ $pull: { following: targetUserId } });
+        await targetUser.updateOne({ $pull: { followers: req.user.id } });
+
+        res.status(200).json({ message: 'Unfollowed successfully', success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error', success: false });
+    }
+});
+
+
 export const changeCover = asyncHandler(async (req, res) => {
     try {
         const { cover } = req.body;
@@ -198,8 +225,20 @@ export const getUserById = asyncHandler(async (req, res) => {
 });
 export const getUserByUserName = asyncHandler(async (req, res) => {
     try {
-        const user = await User.findOne({ userName: req.params.userName})
-        res.status(200).json({ user, success: true })
+        console.log(req.params.userName)
+        const user = await User.findOne({ userName: req.params.userName })
+        console.log(user)
+        const currentUser = await User.findById(req.user.id);
+        console.log(currentUser)
+        //isFollowing
+        //isBlocked
+
+        const isFollowing = currentUser.following.includes(user._id);
+        const isBlocked = currentUser.blockedUsers.includes(user._id);
+        const isBlockedBy = user.blockedUsers.includes(currentUser._id);
+        console.log(user,isFollowing, isBlocked, isBlockedBy)
+        res.status(200).json({ user, isFollowing, isBlocked, isBlockedBy, success: true });
+
     } catch (error) {
         res.status(500).json({ error, success: false })
     }

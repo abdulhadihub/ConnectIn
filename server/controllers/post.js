@@ -33,6 +33,24 @@ export const getPost = asyncHandler(async (req, res) => {
     }
 })
 
+export const getPostId = asyncHandler(async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.postId)
+        console.log(post)
+        if (!post) {
+            console.log("post not found")
+            res.status(404).json({ message: 'Post not found', success: false });
+            return;
+        }
+
+        res.status(200).json({ post, success: true});
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error getting post' });
+    }
+})
+
+
 export const getPosts = asyncHandler(async (req, res) => {
     try {
         const posts = await Post.find()

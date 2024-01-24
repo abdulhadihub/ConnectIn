@@ -7,6 +7,7 @@ import server from '@/utils/server';
 import { calculatePostTime } from '@/utils/utils';
 import { Dropdown } from 'antd';
 import { MdDelete, MdEdit } from 'react-icons/md';
+import Link from 'next/link';
 
 const PostItem = ({ data, deletePost }) => {
 
@@ -20,14 +21,14 @@ const PostItem = ({ data, deletePost }) => {
                 </div>
             ),
         },
-        {
-            key: '2',
-            label: (
-                <div className='flex items-center'>
-                    <MdEdit className='mr-2' color='blue' size={25} /> Edit
-                </div>
-            ),
-        }
+        // {
+        //     key: '2',
+        //     label: (
+        //         <Link href={`/edit-post/${data?._id}`} className='flex items-center'>
+        //             <MdEdit className='mr-2' color='blue' size={25} /> Edit
+        //         </Link>
+        //     ),
+        // }
     ];
     return (
 

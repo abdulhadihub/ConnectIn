@@ -22,7 +22,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { usePostsByUser } from '@/utils/Hooks/UseHooks';
 
 
-const Profile = ({ user }) => {
+const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
   const { user: currentUser, updateUser } = useUser();
   //eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies(['x-auth-token']);
@@ -31,6 +31,9 @@ const Profile = ({ user }) => {
   const { getPosts } = usePostsByUser()
 
   const [currentPage, setCurrentPage] = useState(0);
+  const [isFollowingUser, setIsFollowingUser] = useState(isFollowing);
+  const [isBlockedUser, setIsBlockedUser] = useState(isBlocked);
+  const [isBlockedByUser, setIsBlockedByUser] = useState(isBlockedBy);
   const [newUserName, setNewUserName] = useState(user?.userName);
   const [isError, setIsError] = useState(false);
 
@@ -68,7 +71,9 @@ const Profile = ({ user }) => {
     }
     fetchPosts()
   }, [user?._id])
-
+  const handleCopy = () => {
+    message.success('URL Copied');
+  };
   const startIndex = currentPage * postsPerPage;
   const endIndex = startIndex + postsPerPage;
   const currentPosts = postsData?.slice(startIndex, endIndex);
@@ -96,6 +101,62 @@ const Profile = ({ user }) => {
     );
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleFollow = async () => {
+    try {
+      const { data } = await axios.put(`${server}/api/user/follow/${user?._id}`, {}, {
+        headers: {
+          'x-auth-token': cookies['x-auth-token']
+        }
+      })
+      if (data?.success) {
+        setIsFollowingUser(true)
+        notification.success({
+          message: 'Success',
+          description: data?.message,
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      notification.error({
+        message: 'Error',
+        description: error?.response?.data?.message,
+      })
+    }
+  }
+
+  const handleUnFollow = async () => {
+    try {
+      const { data } = await axios.put(`${server}/api/user/unfollow/${user?._id}`, {}, {
+        headers: {
+          'x-auth-token': cookies['x-auth-token']
+        }
+      })
+      if (data?.success) {
+        notification.success({
+          message: 'Success',
+          description: data?.message,
+        })
+        setIsFollowingUser(false)
+      }
+    } catch (error) {
+      console.log(error)
+      notification.error({
+        message: 'Error',
+        description: error?.response?.data?.message,
+      })
+    }
+  }
   return (
     <>
       <div className='sm:mx-36 mx-10 py-6'>
@@ -135,9 +196,15 @@ const Profile = ({ user }) => {
                 {/* edit profile image */}
               </div>
               <div className='mt-2 px-8'>
-                <div className='text-2xl font-semibold'>{user?.fName} {user?.lName}</div>
+                <div className='flex justify-between'>
+                  <div className='text-2xl font-semibold'>{user?.fName} {user?.lName}</div>
+                  <div>
+                    {isFollowingUser ? <div onClick={handleUnFollow} className='flex cursor-pointer hover:bg-blue-100 p-2 px-3 rounded-full items-center text-blue-600 text-sm font-semibold'><TiTick size={20} /> Following</div> : <div onClick={handleFollow} className='flex items-center cursor-pointer hover:bg-blue-100 p-2 px-3 rounded-full text-blue-600 text-sm font-semibold'>Follow</div>}
+                  </div>
+                </div>
                 <div className='text-gray-500 text-sm font-semibold'>{user?.headline}</div>
                 <div className='text-gray-500 text-sm my-2'>{user?.city || "City"}, {user?.country || "Country"}
+                  <span className='cursor-pointer text-blue-600 hover:underline font-semibold ml-2' onClick={showModal}>Contact Info</span>
                 </div>
                 <span className='text-blue-600 text-sm mt-[1px] font-semibold hover:underline cursor-pointer'>{user?.followers?.length || "0"} followers</span>
                 <span className='text-blue-600 mx-2 text-sm mt-[1px] font-semibold hover:underline cursor-pointer'>{user?.following?.length || "0"} followings</span>
@@ -210,7 +277,7 @@ const Profile = ({ user }) => {
             <div className='my-4 bg-white rounded-lg p-2'>
               <div className='flex justify-between items-center px-4 my-2'>
                 <div className='text-xl font-semibold'>Public URL</div>
-                <CopyToClipboard text={`${client}/${user?.userName}`} onCopy={() => handleCopy()}>
+                <CopyToClipboard text={`${client}/profile/${user?.userName}`} onCopy={() => handleCopy()}>
                   <div className='cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full'>
                     <IoMdShare color='gray' size={25} />
                   </div>
@@ -225,6 +292,51 @@ const Profile = ({ user }) => {
           </div>
         </div>
       </div>
+
+      <Modal title={`${user?.fName} ${user?.lName}`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+        footer={null}
+      >
+        <div className='flex justify-between'>
+          <div className='text-lg'>Contact Info</div>
+          {/* <div className='cursor-pointer'><MdOutlineModeEditOutline color='gray' size={25} /></div> */}
+        </div>
+        <div className='flex'>
+          <div className='w-[10%]'><LuLinkedin color='gray' size={25} /></div>
+          <div className='w-[90%]'>
+            <h3>Your Profile</h3>
+            <div>
+              <Link className='hover:underline' target='_blank' href={`${client}/profile/${user?.userName || ""}`}>{client}/profile/{user?.userName}</Link>
+            </div>
+          </div>
+        </div>
+        <div className='flex my-2'>
+          <div className='w-[10%]'><ImAttachment color='gray' size={25} /></div>
+          <div className='w-[90%]'>
+            <h3>Website</h3>
+            <div>
+              <Link className='hover:underline' target='_blank' href={user?.websiteLink || ""}>{user?.websiteLink}</Link>
+            </div>
+          </div>
+        </div>
+        <div className='flex my-2'>
+          <div className='w-[10%]'><MdAttachEmail color='gray' size={25} /></div>
+          <div className='w-[90%]'>
+            <h3>Email</h3>
+            <div>
+              <Link className='hover:underline' target='_blank' href={`mailto:${user?.email || ""}`}>{user?.email}</Link>
+            </div>
+          </div>
+        </div>
+        <div className='flex my-2'>
+          <div className='w-[10%]'><FaPhone color='gray' size={25} /></div>
+          <div className='w-[90%]'>
+            <h3>Phone</h3>
+            <div>
+              <Link className='hover:underline' target='_blank' href={`tel:${user?.phone || ""}`}>{user?.phone}</Link>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   )
 }

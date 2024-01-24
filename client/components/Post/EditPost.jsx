@@ -1,6 +1,6 @@
 "use client"
 import { Form, Input, Select, notification } from 'antd';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';  // Import useEffect
 import { GrGallery } from "react-icons/gr";
 import { IoSendOutline } from "react-icons/io5";
 import axios from 'axios';
@@ -9,15 +9,15 @@ import { useCookies } from 'react-cookie';
 import { useUser } from '@/utils/Context/UserContext';
 import { useRouter } from 'next/navigation';
 
-const EditPost = () => {
+const EditPost = ({post}) => {
     const [image, setImage] = useState('');
     const route = useRouter();
     const { user } = useUser();
-    //eslint-disable-next-line
-    const [cookies, setCookie, removeCookie] = useCookies(['x-auth-token']);
+    const [cookies] = useCookies(['x-auth-token']);
+    const [postData, setPostData] = useState(post);  // State to store post data
 
-    const handleCreate = async (values) => {
-        console.log(values)
+
+    const handleUpdate = async (values) => {
         if (image) {
             const dataa = new FormData();
             const filename = Date.now() + image.name;
@@ -26,47 +26,52 @@ const EditPost = () => {
             try {
                 await axios.post(`${server}/api/upload`, dataa);
                 values.postImage = filename;
-                try {
-                    const res = await axios.post(`${server}/api/post/create`, values, {
-                        headers: {
-                            'x-auth-token': cookies['x-auth-token']
-                        }
-                    })
-                    if (res?.data?.success) {
-                        notification.success({
-                            message: 'Success',
-                            description: res?.data?.message,
-                        })
-
-                        route.push('/feed');
-                    } else {
-                        notification.error({
-                            message: 'Error',
-                            description: res?.data?.message,
-                        })
-                    }
-                } catch (error) {
-                    console.log(error)
-                    notification.error({
-                        message: 'Error',
-                        description: error?.response?.data?.message,
-                    })
-                }
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 notification.error({
                     message: 'Error',
                     description: err?.response?.data?.message,
-                })
+                });
             }
         }
-    }
+
+        try {
+            const res = await axios.put(`${server}/api/post/update/${postData?._id}`, values, {
+                headers: {
+                    'x-auth-token': cookies['x-auth-token'],
+                },
+            });
+            if (res?.data?.success) {
+                notification.success({
+                    message: 'Success',
+                    description: res?.data?.message,
+                });
+                route.push('/feed');
+            } else {
+                notification.error({
+                    message: 'Error',
+                    description: res?.data?.message,
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            notification.error({
+                message: 'Error',
+                description: error?.response?.data?.message,
+            });
+        }
+    };
 
     return (
         <div className='sm:mx-56 mx-10 py-6'>
-            <h1 className='text-center font-bold text-2xl my-3'>Create New Post</h1>
-            <Form layout='vertical' onFinish={handleCreate} className='bg-white rounded-lg'>
-                <div className='px-4'>
+            <h1 className='text-center font-bold text-2xl my-3'>Edit Post</h1>
+            <Form layout='vertical' onFinish={handleUpdate} className='bg-white rounded-lg' 
+            initialValues={{
+                title: postData?.title,
+                interests: postData?.interests,
+                description: postData?.description,
+            }}>
+            <div className='px-4'>
                     <div className='flex p-4 items-center'>
                         <img src={`${server}/images/${user?.profileImage}`} className='rounded-full h-10 w-10' alt='profile' />
                         <p className='ml-2'>{user?.fName} {user?.lName}</p>
@@ -145,7 +150,7 @@ const EditPost = () => {
                 </div>
             </Form>
         </div>
-    )
-}
+    );
+};
 
-export default EditPost
+export default EditPost;

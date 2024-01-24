@@ -10,7 +10,6 @@ const page = ({ params }) => {
     // const { user, loading, error } = useUserById(params?.user)
     const { user, loading, error } = useUserByUsername(params?.user)
     const { user: currentUser } = useUser()
-    console.log(user)
 
     if (loading) return <div>Loading...</div>
     if (error) return <div>{error}</div>
@@ -19,7 +18,7 @@ const page = ({ params }) => {
 
     return (
         <div className='bg-[#F4F2EE]'>
-            <ProfileCustom user={user} />
+        <ProfileCustom user={user?.user} isFollowing={user?.isFollowing} isBlocked={user?.isBlocked} isBlockedBy={user?.isBlockedBy} />
         </div>
     )
 }

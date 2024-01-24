@@ -99,6 +99,7 @@ export const useSuggestions = () => {
     const [error, setError] = useState(null)
     const [cookies] = useCookies(['x-auth-token']);
     const [suggestions, setSuggestions] = useState([])
+    
 
     useEffect(() => {
         async function getSuggestions() {
@@ -147,17 +148,25 @@ export const useFollowUser = () => {
 }
 
 export const useUserByUsername = (username) => {
+    console.log("username", username)
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [cookies] = useCookies(['x-auth-token']);
 
     useEffect(() => {
         async function getUser() {
             try {
-                const { data } = await axios.get(`${server}/api/user/user-name/${username}`)
-                setUser(data.user)
+                const { data } = await axios.get(`${server}/api/user/user-name/${username}`,{
+                    headers: {
+                        'x-auth-token': cookies['x-auth-token']
+                    }
+                })
+                console.log("data", data)
+                setUser(data)
                 setLoading(false)
             } catch (err) {
+                console.log("err", err)
                 setError(err)
                 setLoading(false)
             }
