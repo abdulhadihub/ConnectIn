@@ -17,7 +17,7 @@ router.put("/change-interests", verifyUser, changeInterests);
 router.put("/change-about", verifyUser, changeAbout);
 router.put("/block", verifyUser, blockUser);
 router.put("/unblock", verifyUser, unblockUser);
-router.put("/follow", verifyUser, followUser);
+router.put("/follow/:targetUserId", verifyUser, followUser);
 router.put("/change-cover", verifyUser, changeCover);
 router.put("/change-profile-image", verifyUser, changeProfileImage);
 router.get("/:id", getUserById);

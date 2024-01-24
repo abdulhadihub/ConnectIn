@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Post from '../models/postModel.js';
+import User from '../models/userModel.js';
 
 
 export const getPost = asyncHandler(async (req, res) => {
@@ -201,7 +202,60 @@ export const replyToComment = asyncHandler(async (req, res) => {
 
 export const getPostsByUserId = asyncHandler(async (req, res) => {
     try {
+        const posts = await Post.find({ user: req.params.id })
+            .populate('user', '_id email profileImage fName lName userName')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: '_id email profileImage fName lName userName',
+                },
+            })
+            .populate({
+                path: 'likes',
+                populate: {
+                    path: 'user',
+                    select: '_id email profileImage fName lName userName',
+                },
+            })
+            .sort({ createdAt: -1 });
+        res.status(200).json({ posts, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+})
+
+export const getPostsOfCurrentUser = asyncHandler(async (req, res) => {
+    try {
         const posts = await Post.find({ user: req.user.id })
+            .populate('user', '_id email profileImage fName lName userName')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: '_id email profileImage fName lName userName',
+                },
+            })
+            .populate({
+                path: 'likes',
+                populate: {
+                    path: 'user',
+                    select: '_id email profileImage fName lName userName',
+                },
+            })
+            .sort({ createdAt: -1 });
+        res.status(200).json({ posts, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+})
+
+export const getPostsForFeed = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const posts = await Post.find({ user: { $in: user.following } })
             .populate('user', '_id email profileImage fName lName userName')
             .populate({
                 path: 'comments',
