@@ -240,10 +240,7 @@ export const getPostsOfCurrentUser = asyncHandler(async (req, res) => {
             })
             .populate({
                 path: 'likes',
-                populate: {
-                    path: 'user',
-                    select: '_id email profileImage fName lName userName',
-                },
+                select: '_id email profileImage fName lName userName',
             })
             .sort({ createdAt: -1 });
         res.status(200).json({ posts, success: true });

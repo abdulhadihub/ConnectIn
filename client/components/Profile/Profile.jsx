@@ -301,7 +301,7 @@ const Profile = ({ user }) => {
   const PostList = ({ posts }) => {
     return (
       <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"} gap-7 my-3`}>
-        {posts.length > 0 ? posts.map((post, index) => (
+        {posts?.length > 0 ? posts?.map((post, index) => (
           <PostItem key={index} data={post} />
         )) : <div>No Post</div>}
         {!isMobile && posts?.length !== 0 && currentPosts.length < 2 && <div style={{ border: "1px solid grey" }} className=' flex justify-center items-center rounded-lg'>
