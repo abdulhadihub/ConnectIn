@@ -28,6 +28,13 @@ function Post({ post }) {
             const data = await addComment(post._id, newComment)
             if (data?.success) {
                 setNewComment('')
+                const newCommentObj = {
+                    user: currentUser._id,
+                    comment: newComment
+                }
+                let newComments = [...comments]
+                newComments.unshift(newCommentObj)
+                setComments(newComments)
                 notification.success({
                     message: 'Success',
                     description: data?.message,
@@ -44,13 +51,6 @@ function Post({ post }) {
             console.log(err)
         }
 
-        const newCommentObj = {
-            user: currentUser._id,
-            comment: newComment
-        }
-        let newComments = [...comments]
-        newComments.unshift(newCommentObj)
-        setComments(newComments)
     }
 
     const handleAddLike = async () => {
