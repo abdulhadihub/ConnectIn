@@ -30,7 +30,7 @@ const UserDropdown = () => {
                         <div className='flex'>
                             {!user?.profileImage ? (
                                 <img src='/user.jpg' width={50} height={50} className='rounded-full' />
-                            ):(<img src={`${server}/images/${user?.profileImage}`} width={50} height={50} className='rounded-full' />)}
+                            ) : (<img src={`${server}/images/${user?.profileImage}`} width={50} height={50} className='rounded-full' />)}
                             <div className='ml-3'>
                                 <p className='text-md font-semibold text-black'>{user?.fName} {user?.lName}</p>
                                 <p className='text-[12px] text-gray-500'>{user?.userName}</p>
@@ -64,8 +64,9 @@ const UserDropdown = () => {
             placement="bottom"
         >
             <button className='text-gray-500'>
-                <img src={`${server}/images/${user?.profileImage}`} width={40} height={40} className='rounded-full' />
-            </button>
+                {!user?.profileImage ? (
+                    <img src='/user.jpg' width={50} height={50} className='rounded-full' />
+                ) : (<img src={`${server}/images/${user?.profileImage}`} width={50} height={50} className='rounded-full' />)}</button>
         </Dropdown>
     )
 }

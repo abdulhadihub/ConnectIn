@@ -11,7 +11,7 @@ import { useUserById, useCommentOnPost, useAddLike } from '@/utils/Hooks/UseHook
 import { useUser } from '@/utils/Context/UserContext';
 import { notification } from 'antd';
 import server from '@/utils/server';
-import Link from 'next/link';
+import Link from 'next/link'
 
 function Post({ post }) {
     console.log(post)
@@ -95,7 +95,7 @@ function Post({ post }) {
                 {/* <Options userId={post?.userId} /> */}
             </div>
             <div className='flex'>
-                <Link href={``}>
+                <Link href={`/profile/${user?._id}`}>
                     <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
                 </Link>
                 <div>

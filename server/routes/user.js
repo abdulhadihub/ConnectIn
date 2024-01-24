@@ -1,8 +1,9 @@
 import express from "express";
-import { login, registerUser, profile, getUserById,changeUserName, changePassword,
-    blockUser, unblockUser, followUser,changeCover, changeProfileImage, changeDetails,
-    changeInterests,changeAbout
- } from "../controllers/user.js";
+import {
+    login, registerUser, profile, getUserById, changeUserName, changePassword,
+    blockUser, unblockUser, followUser, changeCover, changeProfileImage, changeDetails,
+    changeInterests, changeAbout, suggestUsers
+} from "../controllers/user.js";
 import { verifyUser } from "../middleware/verifyUser.js";
 
 const router = express.Router();
@@ -10,6 +11,7 @@ const router = express.Router();
 router.post("/login", login);
 router.post("/register", registerUser);
 router.get("/verify", verifyUser, profile);
+router.get("/suggestions", verifyUser, suggestUsers);
 router.put("/change-user-name", verifyUser, changeUserName);
 router.put("/change-password", verifyUser, changePassword);
 router.put("/change-details", verifyUser, changeDetails);
