@@ -196,6 +196,14 @@ export const getUserById = asyncHandler(async (req, res) => {
         res.status(500).json({ error, success: false })
     }
 });
+export const getUserByUserName = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findOne({ userName: req.params.userName})
+        res.status(200).json({ user, success: true })
+    } catch (error) {
+        res.status(500).json({ error, success: false })
+    }
+});
 
 export const changeDetails = asyncHandler(async (req, res) => {
     try {
