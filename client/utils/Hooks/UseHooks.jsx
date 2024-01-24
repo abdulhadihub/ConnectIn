@@ -120,3 +120,28 @@ export const useSuggestions = () => {
 
     return { suggestions, loading, error }
 }
+
+export const useFollowUser = () => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [cookies] = useCookies(['x-auth-token']);
+
+    const followUser = async (userId) => {
+        setLoading(true)
+        try {
+            const { data } = await axios.put(`${server}/api/user/follow/${userId}`, {},
+                {
+                    headers: {
+                        'x-auth-token': cookies['x-auth-token']
+                    }
+                })
+            setLoading(false)
+            return data
+        } catch (err) {
+            setError(err)
+            setLoading(false)
+        }
+    }
+
+    return { followUser, loading, error }
+}
