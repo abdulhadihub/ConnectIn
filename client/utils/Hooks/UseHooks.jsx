@@ -145,3 +145,25 @@ export const useFollowUser = () => {
 
     return { followUser, loading, error }
 }
+
+export const useUserByUsername = (username) => {
+    const [user, setUser] = useState({})
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        async function getUser() {
+            try {
+                const { data } = await axios.get(`${server}/api/user/user-name/${username}`)
+                setUser(data.user)
+                setLoading(false)
+            } catch (err) {
+                setError(err)
+                setLoading(false)
+            }
+        }
+        getUser()
+    }, [username])
+
+    return { user, loading, error }
+}

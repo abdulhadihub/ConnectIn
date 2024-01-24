@@ -3,7 +3,7 @@ import calculateTime from '@/utils/calculateTime';
 import server from '@/utils/server';
 
 function Comment({ comment }) {
-
+    console.log(comment)
     return (
         <div className='flex mt-5'>
             <img src={`${server}/images/${comment?.user?.profileImage}`} width={30} height={30} className='rounded-full mr-3' />

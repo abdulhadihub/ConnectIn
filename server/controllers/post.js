@@ -270,7 +270,7 @@ export const getPostsForFeed = asyncHandler(async (req, res) => {
                 select: '_id email profileImage fName lName userName',
             })
             .sort({ createdAt: -1 });
-        
+
         const formattedPostsPromise = posts.map((post) => {
             const isLikedByUser = post.likes.some((like) => like?.userName === user?.userName);
             console.log(post.likes.some((like) => like?.userName === user?.userName))
