@@ -1,7 +1,7 @@
 'use client'
 import Profile from '@/components/Profile/Profile'
 import React from 'react'
-import isAuth from '@/components/isAuth/IsAuth'
+import isAuth from '@/components/isAuth/isAuth'
 
 const page = () => {
   return (
