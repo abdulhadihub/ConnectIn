@@ -35,7 +35,7 @@ function Suggestion({ user }) {
 
     return (
         <div className='flex'>
-            <Link href={`/profile/${user?._id}`}>
+            <Link href={`/profile/${user?.userName}`}>
                 {!user?.profileImage ? (
                     <img src='/user.jpg' width={50} height={50} className='rounded-full' />
                 ) : (<img src={`${server}/images/${user?.profileImage}`} width={50} height={50} className='rounded-full' />)}

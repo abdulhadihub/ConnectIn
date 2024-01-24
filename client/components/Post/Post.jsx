@@ -95,7 +95,7 @@ function Post({ post }) {
                 {/* <Options userId={post?.userId} /> */}
             </div>
             <div className='flex'>
-                <Link href={`/profile/${user?._id}`}>
+                <Link href={`/profile/${user?.userName}`}>
                     <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
                 </Link>
                 <div>
