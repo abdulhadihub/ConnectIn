@@ -240,10 +240,7 @@ export const getPostsOfCurrentUser = asyncHandler(async (req, res) => {
             })
             .populate({
                 path: 'likes',
-                populate: {
-                    path: 'user',
-                    select: '_id email profileImage fName lName userName',
-                },
+                select: '_id email profileImage fName lName userName',
             })
             .sort({ createdAt: -1 });
         res.status(200).json({ posts, success: true });
@@ -270,7 +267,7 @@ export const getPostsForFeed = asyncHandler(async (req, res) => {
                 select: '_id email profileImage fName lName userName',
             })
             .sort({ createdAt: -1 });
-        
+
         const formattedPostsPromise = posts.map((post) => {
             const isLikedByUser = post.likes.some((like) => like?.userName === user?.userName);
             console.log(post.likes.some((like) => like?.userName === user?.userName))
