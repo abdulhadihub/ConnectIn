@@ -61,3 +61,119 @@ export const profile = asyncHandler(async (req, res) => {
         res.status(500).json({ error, success: false })
     }
 });
+
+
+export const changeUserName = asyncHandler(async (req, res) => {
+    try {
+        const { newUserName } = req.body;
+
+        const findByUserName = await User.findOne({ userName: newUserName });
+
+        if (findByUserName) {
+            return res.status(400).json({ message: 'Username already exists', success: false });
+        }
+        const user = await User.findByIdAndUpdate(req.user.id, { userName: newUserName }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', success: false });
+        }
+
+        res.json({ message: 'Username updated successfully', user, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+});
+
+export const changePassword = asyncHandler(async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', success: false });
+        }
+
+        if (!await bcrypt.compare(currentPassword, user.password)) {
+            return res.status(401).json({ message: 'Invalid current password', success: false });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await User.findByIdAndUpdate(req.user.id, { password: hashedPassword }, { new: true });
+
+        res.json({ message: 'Password updated successfully', success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+});
+
+export const blockUser = asyncHandler(async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', success: false });
+        }
+        await User.findByIdAndUpdate(req.user.id, { $addToSet: { blockedUsers: userId } }, { new: true });
+        res.status(200).json({ message: 'User blocked successfully', success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+export const unblockUser = asyncHandler(async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', success: false });
+        }
+        await User.findByIdAndUpdate(req.user.id, { $pull: { blockedUsers: userId } }, { new: true });
+        res.status(200).json({ message: 'User unblocked successfully', success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+export const followUser = asyncHandler(async (req, res) => {
+    try {
+        const { targetUserId } = req.params;
+
+        const user = await User.findById(req.user.id);
+        const targetUser = await User.findById(targetUserId);
+
+        if (!user || !targetUser) {
+            return res.status(404).json({ message: 'User not found', success: false });
+        }
+
+        if (user.following.includes(targetUserId)) {
+            return res.status(400).json({ message: 'Already following', success: false });
+        }
+
+        await user.updateOne({ $push: { following: targetUserId } });
+        await targetUser.updateOne({ $push: { followers: req.user.id } });
+
+        res.status(200).json({ message: 'Followed successfully', success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error', success: false });
+    }
+});
+
+export const changeCover = asyncHandler(async (req, res) => {
+    try {
+        const { cover } = req.body;
+        const user = await User.findByIdAndUpdate(req.user.id, { cover }, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', success: false });
+        }
+        res.status(200).json({ message: 'Cover updated successfully', user, success: true });
+    } catch (error) {
+
+    }
+});

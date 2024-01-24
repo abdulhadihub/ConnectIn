@@ -6,6 +6,10 @@ const userScheme = mongoose.Schema({
         type: String,
         unique: true
     },
+    userName:{
+        type: String,
+        unique: true
+    },
     password: String,
     dateOfBirth: String,
     gender: String,
@@ -15,6 +19,18 @@ const userScheme = mongoose.Schema({
     city: String,
     cover: String,
     followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    blockedUsers: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'

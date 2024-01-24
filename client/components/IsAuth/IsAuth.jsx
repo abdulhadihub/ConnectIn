@@ -10,6 +10,7 @@ export default function isAuth(Component) {
     return function isAuth(props) {
         const [cookies] = useCookies(['x-auth-token']);
         const { user, updateUser } = useUser();
+        const token = cookies["x-auth-token"];
 
         const fetchUser = async () => {
             try {
@@ -30,14 +31,14 @@ export default function isAuth(Component) {
 
         useEffect(() => {
             if (!user) {
-                if (cookies?.["x-auth-token"]) {
+                if (cookies["x-auth-token"]) {
                     fetchUser();
                 }
                 else {
                     return redirect("/login");
                 }
             }
-        }, []);
+        }, [token]);
 
 
         if (!user) {

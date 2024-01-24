@@ -10,25 +10,11 @@ import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import { FaSwatchbook } from "react-icons/fa";
 import Link from 'next/link';
 import PostItem from './PostItem';
+import { useUser } from '@/utils/Context/UserContext';
 
 
 const Profile = () => {
-  const [data, setData] = useState({
-    fName: 'Ali',
-    lName: 'Raza',
-    profileCover: 'https://media.licdn.com/dms/image/D4D16AQEqW4q8g5-TzQ/profile-displaybackgroundimage-shrink_350_1400/0/1678555113571?e=1711584000&v=beta&t=pnUTAEQn-LUeXXGbHUBwqlWX-rWkE8m90T1Az9rexoY',
-    profileImage: 'https://media.licdn.com/dms/image/D4D03AQFh-x1O7wZkvQ/profile-displayphoto-shrink_400_400/0/1694578053479?e=1711584000&v=beta&t=pGT0uZKUdaN3iC4o6616a2zYpscIAfnogfih8oF_eVE',
-    headline: "Full Stack Developer | α Microsoft Ambassador | CUI'24",
-    country: 'Pakistan',
-    city: 'Islamabad',
-    followers: 100,
-    profileLink: 'https://www.linkedin.com/in/alirazahub',
-    websiteLink: 'https://alirazahub.tech/',
-    email: 'alirazahub2@gmail.com',
-    phone: '+923025414924',
-    about: "Driven final-year Computer Science student with 2+ years of experience as a MERN Stack Developer. Passionate about building intuitive and user-friendly web applications using the latest technologies like React/Angular, Node.js/Python, Express.js, and MongoDB/MYSQL, I'm actively seeking opportunities to collaborate on challenging projects and apply my skills to create impactful web experiences.",
-    interests: ['Web Development', 'Open Source', 'Programming', 'UI/UX Designing', 'Graphic Designing', 'Photography', 'Videography', 'Content Writing', 'Blogging', 'Public Speaking', 'Social Media Marketing', 'Digital Marketing'],
-  })
+  const {user} = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const showModal = () => {
@@ -154,28 +140,54 @@ const Profile = () => {
         <div className='sm:flex block justify-between gap-10'>
           <div className='sm:w-[78%] w-[100%] rounded-lg pb-4'>
             <div className='bg-white  rounded-lg pb-4'>
-              <div className='relative'>
-                <img className='w-[100%] rounded-t-lg' src={data?.profileCover} />
-                <button
-                  className='absolute top-4 right-8 bg-white  flex items-center p-2 rounded-full hover:bg-gray-200'
-                // onClick={handleEditCover} // Replace with your edit cover function
-                >
-                  <MdOutlineModeEditOutline color='blue' size={20} />
-                </button>
-              </div>
-              <div className='flex justify-between px-8'>
-                <div className='sm:w-[160px] w-[100px] sm:h-[160px] h-[100px] z-10 sm:mt-[-120px] mt-[-70px] bg-white p-[1px] rounded-full'>
-                  <img className='w-[95%] rounded-full ml-[2px] mt-[2px] sm:ml-[4px] sm:mt-[4px]' src={data?.profileImage} />
+              {user?.profileCover ?
+                <div className='relative'>
+                  {/* cover */}
+                  <img className='w-[100%] rounded-t-lg' src={user?.profileCover} />
+                  <button
+                    className='absolute top-4 right-8 bg-white  flex items-center p-2 rounded-full hover:bg-gray-200'
+                  // onClick={handleEditCover} // Replace with your edit cover function
+                  >
+                    <MdOutlineModeEditOutline color='blue' size={20} />
+                  </button>
                 </div>
+                :
+                <div className='relative'>
+                  {/* cover */}
+                  <div className='w-[100%] h-[200px] bg-gray-300 rounded-t-lg flex justify-center items-center' >
+                    No Cover Image
+                  </div>
+                  <button
+                    className='absolute top-4 right-8 bg-white  flex items-center p-2 rounded-full hover:bg-gray-200'
+                  // onClick={handleEditCover} // Replace with your edit cover function
+                  >
+                    <MdOutlineModeEditOutline color='blue' size={20} />
+                  </button>
+                </div>
+              }
+              <div className='flex justify-between px-8'>
+                {/* profile image */}
+                {user?.profileImage ?
+                <div className='sm:w-[160px] w-[100px] sm:h-[160px] h-[100px] z-10 sm:mt-[-120px] mt-[-70px] bg-white p-[1px] rounded-full'>
+                  <img className='w-[95%] rounded-full ml-[2px] mt-[2px] sm:ml-[4px] sm:mt-[4px]' src={user?.profileImage} />
+                </div>
+                :
+                <div className='sm:w-[160px] w-[100px] sm:h-[160px] h-[100px] z-10 sm:mt-[-120px] mt-[-70px] bg-white p-[1px] rounded-full'>
+                  <div className=' mt-[40%] ml-[10%]'>
+                    No Profile Image
+                  </div>
+                </div>
+                }
+                {/* edit profile image */}
                 <div className='mt-2 cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full'><MdOutlineModeEditOutline color='gray' size={25} /></div>
               </div>
               <div className='mt-2 px-8'>
-                <div className='text-2xl font-semibold'>{data?.fName} {data?.lName}</div>
-                <div className='text-gray-500 text-sm font-semibold'>{data?.headline}</div>
-                <div className='text-gray-500 text-sm my-2'>{data?.city}, {data?.country}
+                <div className='text-2xl font-semibold'>{user?.fName} {user?.lName}</div>
+                <div className='text-gray-500 text-sm font-semibold'>{user?.headline}</div>
+                <div className='text-gray-500 text-sm my-2'>{user?.city}, {user?.country}
                   <span className='cursor-pointer text-blue-600 hover:underline font-semibold ml-2' onClick={showModal}>Contact Info</span>
                 </div>
-                <span className='text-blue-600 text-sm mt-[1px] font-semibold hover:underline cursor-pointer'>{data?.followers} followers</span>
+                <span className='text-blue-600 text-sm mt-[1px] font-semibold hover:underline cursor-pointer'>{user?.followers} followers</span>
               </div>
             </div>
             <div className='my-4 bg-white rounded-lg p-2'>
@@ -188,7 +200,7 @@ const Profile = () => {
               </div>
               <div className='px-4'>
                 <div className='flex flex-wrap gap-4'>
-                  {data?.interests?.map((interest, index) => (
+                  {user?.interests?.map((interest, index) => (
                     <div key={index} className='text-sm rounded-full bg-gray-200 p-2 px-3 text-gray-500 cursor-pointer'>{interest}</div>
                   ))}
                 </div>
@@ -202,16 +214,17 @@ const Profile = () => {
                 <div className='cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full'><MdOutlineModeEditOutline color='gray' size={25} /></div>
               </div>
               <div className='px-4'>
-                <div className='text-sm text-gray-500'>{data?.about}</div>
+                <div className='text-sm text-gray-500'>{user?.about}</div>
               </div>
             </div>
 
+            {/* <ImageCropper /> */}
             {/* posts */}
             <div className='my-4 bg-white rounded-lg p-2'>
               <div className='flex justify-between items-center px-4 my-2'>
                 <div>
                   <div className='text-xl font-semibold'>Posts</div>
-                  <div className='text-sm text-blue-600 hover:underline cursor-pointer'>{data?.followers} followers</div>
+                  <div className='text-sm text-blue-600 hover:underline cursor-pointer'>{user?.followers} followers</div>
                 </div>
                 <div className='flex gap-2'>
                   <div className='flex border-[1px] text-blue-800 font-semibold bg-gray-300 items-center cursor-pointer hover:bg-gray-200 p-2 px-3 rounded-full'>
@@ -248,7 +261,7 @@ const Profile = () => {
 
 
       {/* contact details modal */}
-      <Modal title={`${data?.fName} ${data?.lName}`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+      <Modal title={`${user?.fName} ${user?.lName}`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
         footer={null}
       >
         <div className='flex justify-between'>
@@ -260,7 +273,7 @@ const Profile = () => {
           <div className='w-[90%]'>
             <h3>Your Profile</h3>
             <div>
-              <Link className='hover:underline' target='_blank' href={data?.profileLink}>{data?.profileLink}</Link>
+              <Link className='hover:underline' target='_blank' href={user?.profileLink || ""}>{user?.profileLink}</Link>
             </div>
           </div>
         </div>
@@ -269,7 +282,7 @@ const Profile = () => {
           <div className='w-[90%]'>
             <h3>Website</h3>
             <div>
-              <Link className='hover:underline' target='_blank' href={data?.websiteLink}>{data?.websiteLink}</Link>
+              <Link className='hover:underline' target='_blank' href={user?.websiteLink || ""}>{user?.websiteLink}</Link>
             </div>
           </div>
         </div>
@@ -278,7 +291,7 @@ const Profile = () => {
           <div className='w-[90%]'>
             <h3>Email</h3>
             <div>
-              <Link className='hover:underline' target='_blank' href={`mailto:${data?.email}`}>{data?.email}</Link>
+              <Link className='hover:underline' target='_blank' href={`mailto:${user?.email || ""}`}>{user?.email}</Link>
             </div>
           </div>
         </div>
@@ -287,7 +300,7 @@ const Profile = () => {
           <div className='w-[90%]'>
             <h3>Phone</h3>
             <div>
-              <Link className='hover:underline' target='_blank' href={`tel:${data?.phone}`}>{data?.phone}</Link>
+              <Link className='hover:underline' target='_blank' href={`tel:${user?.phone || ""}`}>{user?.phone}</Link>
             </div>
           </div>
         </div>
