@@ -37,7 +37,7 @@ export default function isAuth(Component) {
                     return redirect("/login");
                 }
             }
-        }, [token]);
+        }, [token, user]);
 
 
         if (!user) {
