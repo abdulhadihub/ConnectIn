@@ -198,3 +198,29 @@ export const replyToComment = asyncHandler(async (req, res) => {
     }
 })
 
+
+export const getPostsByUserId = asyncHandler(async (req, res) => {
+    try {
+        const posts = await Post.find({ user: req.user.id })
+            .populate('user', '_id email profileImage fName lName userName')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: '_id email profileImage fName lName userName',
+                },
+            })
+            .populate({
+                path: 'likes',
+                populate: {
+                    path: 'user',
+                    select: '_id email profileImage fName lName userName',
+                },
+            })
+            .sort({ createdAt: -1 });
+        res.status(200).json({ posts, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+})

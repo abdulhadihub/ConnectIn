@@ -14,6 +14,7 @@ const userScheme = mongoose.Schema({
     dateOfBirth: String,
     gender: String,
     phone: String,
+    about: String,
     profileImage: String,
     country: String,
     city: String,

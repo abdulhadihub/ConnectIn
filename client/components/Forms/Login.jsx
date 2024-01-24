@@ -26,7 +26,7 @@ const App = () => {
                 });
                 setCookie("x-auth-token", res?.data?.token, {
                     path: "/",
-                    maxAge: 3600, // Expires after 1hr
+                    maxAge: 3600 * 24 * 7, 
                     sameSite: true,
                 });
                 route.push('/feed');

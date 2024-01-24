@@ -3,28 +3,30 @@ import { HiDotsVertical } from "react-icons/hi";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
 import { IoShareSocialSharp } from "react-icons/io5";
+import server from '@/utils/server';
+import { calculatePostTime } from '@/utils/utils';
 
 const PostItem = ({ data }) => {
     return (
         <div style={{ border: '1px solid grey' }} className='text-sm text-gray-500 rounded-lg'>
             <div className='flex justify-between items-center my-2'>
                 <div className='flex gap-2  px-2'>
-                    <div className='w-[10%]'><img className='w-[100%] rounded-full' src={data?.user?.profileImage} /></div>
+                    <div className='w-[10%]'><img className='w-[100%] rounded-full' src={`${server}/images/${data?.user?.profileImage}`} /></div>
                     <div className='w-[90%]'>
-                        <div className='text-sm text-black font-semibold'>{data?.user?.fName} {data?.user?.lName}</div>
-                        <div className='text-xs text-gray-500'>2h • Edited</div>
+                        <div className='text-sm flex text-black font-semibold'>{data?.user?.fName} {data?.user?.lName}</div>
+                        <div className='text-xs text-gray-500'> {data?.isEdited ? calculatePostTime(data?.updatedAt): calculatePostTime(data?.createdAt)} {data?.isEdited && "• Edited"}</div>
                     </div>
                 </div>
                 <div className='cursor-pointer hover:bg-gray-200 p-2 flex items-center rounded-full'><HiDotsVertical color='gray' size={20} /></div>
             </div>
             <div>
                 <div className='text-sm text-gray-500 px-2'>
-                    {data?.description?.length > 200 ? data?.description?.slice(0, 100) + '' : data?.description}
+                    {data?.description?.length > 200 ? data?.description?.slice(0, 50) + '' : data?.description}
                     <div className='flex justify-end'>
                         <span className='text-blue-600 hover:underline cursor-pointer'>... see more</span>
                     </div>
                 </div>
-                <div className='my-2' ><img style={{ height: "200px", objectFit: 'contain' }} className='w-[100%]' src={data?.postImage} alt='imggg' />
+                <div className='my-2' ><img style={{ height: "300px", objectFit: 'fit' }} className='w-[100%]' src={`${server}/images/${data?.postImage}`} alt='imggg' />
                 </div>
                 <div className='px-3'>
                     <div style={{ borderBottom: "1px solid grey" }} className='flex text-[12px] gap-2 my-2'>
