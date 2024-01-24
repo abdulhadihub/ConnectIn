@@ -21,8 +21,8 @@ import { IoMdShare } from "react-icons/io";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 
-const Profile = () => {
-  const { user, updateUser } = useUser();
+const Profile = ({ user }) => {
+  const { updateUser } = useUser();
   //eslint-disable-next-line
   const [cookies, setCookie, removeCookie] = useCookies(['x-auth-token']);
 
@@ -86,7 +86,7 @@ const Profile = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  
+
   const [currentPage, setCurrentPage] = useState(0);
   const [newUserName, setNewUserName] = useState(user?.userName);
   const [isError, setIsError] = useState(false);
@@ -332,7 +332,7 @@ const Profile = () => {
         })
         if (res?.data?.success) {
           setPostsData(res?.data?.posts)
-          console.log('data',res?.data?.posts)
+          console.log('data', res?.data?.posts)
         } else {
           notification.error({
             message: 'Error',
@@ -412,7 +412,7 @@ const Profile = () => {
               <div className='flex justify-between items-center px-4 my-2'>
                 <div className='text-xl font-semibold'>Topics you are Interested in</div>
                 <div className='flex gap-2'>
-                  <MdOutlineModeEditOutline onClick={()=>setIsModalOpen5(true)} className='cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full' color='gray' size={25} />
+                  <MdOutlineModeEditOutline onClick={() => setIsModalOpen5(true)} className='cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full' color='gray' size={25} />
                 </div>
               </div>
               <div className='px-4'>
@@ -429,7 +429,7 @@ const Profile = () => {
             <div className='my-4 bg-white rounded-lg p-2'>
               <div className='flex justify-between items-center px-4 my-2'>
                 <div className='text-xl font-semibold'>About</div>
-                <div onClick={()=>setIsModalOpen6(true)} className='cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full'><MdOutlineModeEditOutline color='gray' size={25} /></div>
+                <div onClick={() => setIsModalOpen6(true)} className='cursor-pointer hover:bg-gray-200  flex items-center p-2 rounded-full'><MdOutlineModeEditOutline color='gray' size={25} /></div>
               </div>
               <div className='px-4'>
                 <div className='text-sm text-gray-500'>{user?.about}</div>
@@ -706,7 +706,7 @@ const Profile = () => {
         <Form
           name="basic"
           layout='vertical'
-          initialValues={{ interests: user?.interests}}
+          initialValues={{ interests: user?.interests }}
           onFinish={handleUpdateInterests}
 
         >
@@ -772,7 +772,7 @@ const Profile = () => {
         <Form
           name="basic"
           layout='vertical'
-          initialValues={{ about: user?.about}}
+          initialValues={{ about: user?.about }}
           onFinish={handleUpdateAbout}
 
         >

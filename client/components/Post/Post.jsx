@@ -10,6 +10,7 @@ import calculateTime from '@/utils/calculateTime';
 import { useUserById, useCommentOnPost, useAddLike } from '@/utils/Hooks/UseHooks';
 import { useUser } from '@/utils/Context/UserContext';
 import { notification } from 'antd';
+import Link from 'next/link'
 
 function Post({ post }) {
     const [showComment, setShowComment] = useState(false)
@@ -92,7 +93,9 @@ function Post({ post }) {
                 <Options userId={post.userId} />
             </div>
             <div className='flex'>
-                <Image src='/user.jpg' width={50} height={50} className='rounded-full mr-3' />
+                <Link href={`/profile/${user?._id}`}>
+                    <Image src='/user.jpg' width={50} height={50} className='rounded-full mr-3' />
+                </Link>
                 <div>
                     <h2 className='text-md'>{user?.fName} {user?.lName}</h2>
                     <p className='text-[12px] text-gray-500'>{user?.email}</p>
