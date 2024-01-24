@@ -8,10 +8,11 @@ const postImages = [
 
 const feedPosts = [
     {
+        _id: '60e2d0f4a2c6e00c9c8a8d7a',
         title: 'Event 1',
         description: 'This is the description for event 1',
         postImage: '/event1.jpg',
-        user: '60e2d0f4a2c6e00c9c8a8d7a',
+        user: '65afdcc340ce47130a18ba9d',
         likes: [
             '60e2d0f4a2c6e00c9c8a8d7a',
             '60e2d0f4a2c6e00c9c8a8d7a',
@@ -21,12 +22,12 @@ const feedPosts = [
         comments: [
             {
                 comment: 'This is a comment',
-                user: '60e2d0f4a2c6e00c9c8a8d7a',
+                user: '65afdcc340ce47130a18ba9d',
                 createdAt: '2021-07-05T10:06:00.000Z',
                 reply: [
                     {
                         comment: 'This is a reply',
-                        user: '60e2d0f4a2c6e00c9c8a8d7a',
+                        user: '65afdcc340ce47130a18ba9d',
                         createdAt: '2021-07-05T10:06:00.000Z'
                     }
                 ]
@@ -40,7 +41,7 @@ const feedPosts = [
         title: 'Event 2',
         description: 'This is the description for event 2',
         postImage: '/event2.jpg',
-        user: '60e2d0f4a2c6e00c9c8a8d7a',
+        user: '65afdcc340ce47130a18ba9d',
         likes: [
             '60e2d0f4a2c6e00c9c8a8d7a',
             '60e2d0f4a2c6e00c9c8a8d7a',
@@ -50,12 +51,12 @@ const feedPosts = [
         comments: [
             {
                 comment: 'This is a comment',
-                user: '60e2d0f4a2c6e00c9c8a8d7a',
+                user: '65afdcc340ce47130a18ba9d',
                 createdAt: '2021-07-05T10:06:00.000Z',
                 reply: [
                     {
                         comment: 'This is a reply',
-                        user: '60e2d0f4a2c6e00c9c8a8d7a',
+                        user: '65afdcc340ce47130a18ba9d',
                         createdAt: '2021-07-05T10:06:00.000Z'
                     }
                 ]
@@ -69,7 +70,7 @@ const feedPosts = [
         title: 'Event 3',
         description: 'This is the description for event 3',
         postImage: '/event3.jpg',
-        user: '60e2d0f4a2c6e00c9c8a8d7a',
+        user: '65afdcc340ce47130a18ba9d',
         likes: [
             '60e2d0f4a2c6e00c9c8a8d7a',
             '60e2d0f4a2c6e00c9c8a8d7a',
@@ -79,12 +80,12 @@ const feedPosts = [
         comments: [
             {
                 comment: 'This is a comment',
-                user: '60e2d0f4a2c6e00c9c8a8d7a',
+                user: '65afdcc340ce47130a18ba9d',
                 createdAt: '2021-07-05T10:06:00.000Z',
                 reply: [
                     {
                         comment: 'This is a reply',
-                        user: '60e2d0f4a2c6e00c9c8a8d7a',
+                        user: '65afdcc340ce47130a18ba9d',
                         createdAt: '2021-07-05T10:06:00.000Z'
                     }
                 ]

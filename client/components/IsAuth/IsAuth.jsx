@@ -20,7 +20,6 @@ export default function isAuth(Component) {
                 });
                 if (res?.data?.success) {
                     updateUser(res?.data?.user);
-                    console.log(user)
                 }
             } catch (error) {
                 console.log(error);

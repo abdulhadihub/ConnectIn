@@ -61,3 +61,12 @@ export const profile = asyncHandler(async (req, res) => {
         res.status(500).json({ error, success: false })
     }
 });
+
+export const getUserById = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        res.status(200).json({ user, success: true })
+    } catch (error) {
+        res.status(500).json({ error, success: false })
+    }
+});
