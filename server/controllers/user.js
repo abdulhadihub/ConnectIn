@@ -177,3 +177,11 @@ export const changeCover = asyncHandler(async (req, res) => {
 
     }
 });
+export const getUserById = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        res.status(200).json({ user, success: true })
+    } catch (error) {
+        res.status(500).json({ error, success: false })
+    }
+});
