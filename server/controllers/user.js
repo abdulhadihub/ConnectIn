@@ -199,7 +199,7 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 export const changeDetails = asyncHandler(async (req, res) => {
     try {
-        const {fName, lName, headline, city, country, websiteLink, phone} = req.body;
+        const { fName, lName, headline, city, country, websiteLink, phone } = req.body;
         const user = await User.findByIdAndUpdate(req.user.id, { fName, lName, headline, city, country, websiteLink, phone }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found', success: false });
@@ -207,18 +207,18 @@ export const changeDetails = asyncHandler(async (req, res) => {
         res.status(200).json({ message: 'Details updated successfully', user, success: true });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error });   
+        res.status(500).json({ error });
     }
 });
 
 export const changeInterests = asyncHandler(async (req, res) => {
     try {
-        const {interests} = req.body;
+        const { interests } = req.body;
         const user = await User.findByIdAndUpdate(req.user.id, { interests }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found', success: false });
         }
-        res.status(200).json({ message: 'Interests updated successfully', user, success: true });    
+        res.status(200).json({ message: 'Interests updated successfully', user, success: true });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error });
@@ -227,14 +227,34 @@ export const changeInterests = asyncHandler(async (req, res) => {
 
 export const changeAbout = asyncHandler(async (req, res) => {
     try {
-        const {about} = req.body;
+        const { about } = req.body;
         const user = await User.findByIdAndUpdate(req.user.id, { about }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found', success: false });
         }
-        res.status(200).json({ message: 'About updated successfully', user, success: true });    
+        res.status(200).json({ message: 'About updated successfully', user, success: true });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error });
     }
 })
+
+export const suggestUsers = asyncHandler(async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.user.id);
+
+        if (!currentUser.interests || currentUser.interests.length === 0) {
+            const users = await User.find({ _id: { $ne: currentUser._id } }).select('-password').limit(5);
+            return res.status(200).json({ users, success: true });
+        }
+        const users = await User.find({
+            _id: { $ne: currentUser._id },
+            interests: { $in: currentUser.interests },
+        }).select('-password').limit(5);
+
+        res.status(200).json({ users, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error, success: false });
+    }
+});

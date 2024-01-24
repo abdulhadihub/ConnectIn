@@ -93,3 +93,30 @@ export const usePostsByUser = () => {
 
     return { getPosts, loading, error }
 }
+
+export const useSuggestions = () => {
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [cookies] = useCookies(['x-auth-token']);
+    const [suggestions, setSuggestions] = useState([])
+
+    useEffect(() => {
+        async function getSuggestions() {
+            try {
+                const { data } = await axios.get(`${server}/api/user/suggestions`, {
+                    headers: {
+                        'x-auth-token': cookies['x-auth-token']
+                    }
+                })
+                setSuggestions(data.users)
+                setLoading(false)
+            } catch (err) {
+                setError(err)
+                setLoading(false)
+            }
+        }
+        getSuggestions()
+    }, [cookies])
+
+    return { suggestions, loading, error }
+}

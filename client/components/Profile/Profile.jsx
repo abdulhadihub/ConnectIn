@@ -19,6 +19,7 @@ import { notification } from 'antd';
 import { TiTick } from "react-icons/ti";
 import { IoMdShare } from "react-icons/io";
 import CopyToClipboard from "react-copy-to-clipboard";
+import SuggestionsWidget from '@/components/SuggestionsWidget/SuggestionsWidget';
 
 
 const Profile = ({ user }) => {
