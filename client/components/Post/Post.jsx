@@ -10,13 +10,15 @@ import calculateTime from '@/utils/calculateTime';
 import { useUserById, useCommentOnPost, useAddLike } from '@/utils/Hooks/UseHooks';
 import { useUser } from '@/utils/Context/UserContext';
 import { notification } from 'antd';
+import server from '@/utils/server';
 
 function Post({ post }) {
+    console.log(post)
     const [showComment, setShowComment] = useState(false)
-    const [comments, setComments] = useState(post.comments)
+    const [comments, setComments] = useState(post?.comments)
     const [newComment, setNewComment] = useState('')
-    const [likes, setLikes] = useState(post.likes)
-    const { user, loading, error } = useUserById(post.user)
+    const [likes, setLikes] = useState(post?.likes)
+    const { user, loading, error } = useUserById(post?.user?._id)
     const { user: currentUser } = useUser()
     const { addComment } = useCommentOnPost()
     const { addLike } = useAddLike()
@@ -25,7 +27,7 @@ function Post({ post }) {
     const handleAddComment = async (e) => {
         e.preventDefault()
         try {
-            const data = await addComment(post._id, newComment)
+            const data = await addComment(post?._id, newComment)
             if (data?.success) {
                 setNewComment('')
                 const newCommentObj = {
@@ -57,7 +59,7 @@ function Post({ post }) {
 
     const handleAddLike = async () => {
         try {
-            const data = await addLike(post._id)
+            const data = await addLike(post?._id)
             if (data?.success) {
                 setIsLiked(!isLiked)
                 if (isLiked) {
@@ -89,21 +91,21 @@ function Post({ post }) {
     return (
         <div className='bg-white shadow-md rounded-md p-3 relative '>
             <div className='absolute top-5 right-5'>
-                <Options userId={post.userId} />
+                {/* <Options userId={post?.userId} /> */}
             </div>
             <div className='flex'>
-                <Image src='/user.jpg' width={50} height={50} className='rounded-full mr-3' />
+                <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
                 <div>
                     <h2 className='text-md'>{user?.fName} {user?.lName}</h2>
                     <p className='text-[12px] text-gray-500'>{user?.email}</p>
-                    <p className='text-[12px] text-gray-500'>{calculateTime(post.createdAt)}</p>
+                    <p className='text-[12px] text-gray-500'>{calculateTime(post?.createdAt)}</p>
                 </div>
             </div>
             <div>
-                <h2 className='text-lg my-3'>{post.title}</h2>
-                <p className='text-md my-5'>{post.description}</p>
+                <h2 className='text-lg my-3'>{post?.title}</h2>
+                <p className='text-md my-5'>{post?.description}</p>
                 <div className='w-full h-[300px]'>
-                    <Image src={post.postImage} width={300} height={300} className='object-cover w-full h-full' />
+                    <img src={`${server}/images/${post?.postImage}`} width={300} height={300} className='object-cover w-full h-full' />
                 </div>
                 {/* <div className='grid grid-cols-3 gap-1'>
 

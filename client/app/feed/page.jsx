@@ -1,14 +1,36 @@
 'use client'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import UserWidget from '@/components/UserWidget/UserWidget'
 import Post from '@/components/Post/Post'
 import SuggestionsWidget from '@/components/SuggestionsWidget/SuggestionsWidget'
 import { useUser } from '@/utils/Context/UserContext'
 import isAuth from '@/components/isAuth/isAuth'
 import { feedPosts } from '@/utils/data'
+import axios from 'axios'
+import { useCookies } from 'react-cookie'
+import server from '@/utils/server'
 
 function page() {
     const { user } = useUser();
+    const [posts, setPosts] = useState([]);
+    //eslint-disable-next-line
+    const [cookies, setCookie] = useCookies(['x-auth-token']);
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const res = await axios.get(`${server}/api/post/feed-posts`, {
+                    headers: {
+                        'x-auth-token': cookies['x-auth-token']
+                    }
+                });
+                setPosts(res?.data?.posts);
+                console.log(res.data.posts)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchPosts();
+    }, [])
     return (
         <>
             <div className='w-full bg-[#f4f2ee]'>
@@ -27,7 +49,7 @@ function page() {
                                 </select>
                             </div>
                             <div className='flex flex-col gap-5'>
-                                {feedPosts.map((post, index) => (
+                                {posts?.map((post, index) => (
                                     <Post key={index} post={post} />
                                 ))}
                             </div>
