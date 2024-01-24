@@ -19,6 +19,7 @@ import { notification } from 'antd';
 import { TiTick } from "react-icons/ti";
 import { IoMdShare } from "react-icons/io";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { usePostsByUser } from '@/utils/Hooks/UseHooks';
 
 
 const Profile = ({ user }) => {
@@ -27,11 +28,12 @@ const Profile = ({ user }) => {
   const [cookies, setCookie, removeCookie] = useCookies(['x-auth-token']);
   const [isMobile, setIsMobile] = useState(false);
   const [postsData, setPostsData] = useState(user?.posts || []);
+  const { getPosts } = usePostsByUser()
 
   const [currentPage, setCurrentPage] = useState(0);
   const [newUserName, setNewUserName] = useState(user?.userName);
   const [isError, setIsError] = useState(false);
-  console.log(user)
+
 
 
   const postsPerPage = isMobile ? 1 : 2;
@@ -56,6 +58,16 @@ const Profile = ({ user }) => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const data = await getPosts(user?._id)
+      if (data?.success) {
+        setPostsData(data?.posts)
+      }
+    }
+    fetchPosts()
+  }, [user?._id])
 
   const startIndex = currentPage * postsPerPage;
   const endIndex = startIndex + postsPerPage;

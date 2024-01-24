@@ -75,3 +75,21 @@ export const useAddLike = () => {
 
     return { addLike, loading, error }
 }
+
+export const usePostsByUser = () => {
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    const getPosts = async (id) => {
+        try {
+            const { data } = await axios.get(`${server}/api/post/user-posts/${id}`)
+            setLoading(false)
+            return data
+        } catch (err) {
+            setError(err)
+            setLoading(false)
+        }
+    }
+
+    return { getPosts, loading, error }
+}
