@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { postImages } from '@/utils/data'
-import { PiThumbsUpThin } from "react-icons/pi";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa6";
 import Options from '@/components/Options/Options'
 import Comment from '@/components/Post/Comment'
@@ -11,6 +11,7 @@ import { useUserById, useCommentOnPost, useAddLike } from '@/utils/Hooks/UseHook
 import { useUser } from '@/utils/Context/UserContext';
 import { notification } from 'antd';
 import server from '@/utils/server';
+import Link from 'next/link';
 
 function Post({ post }) {
     console.log(post)
@@ -22,7 +23,7 @@ function Post({ post }) {
     const { user: currentUser } = useUser()
     const { addComment } = useCommentOnPost()
     const { addLike } = useAddLike()
-    const [isLiked, setIsLiked] = useState(post?.likes.includes(currentUser?._id))
+    const [isLiked, setIsLiked] = useState(post?.isLikedByUser)
 
     const handleAddComment = async (e) => {
         e.preventDefault()
@@ -63,7 +64,7 @@ function Post({ post }) {
             if (data?.success) {
                 setIsLiked(!isLiked)
                 if (isLiked) {
-                    setLikes(likes.filter(like => like !== currentUser._id))
+                    setLikes(likes.filter(like => like?._id !== currentUser._id))
                 }
                 else {
                     setLikes([...likes, currentUser._id])
@@ -94,16 +95,23 @@ function Post({ post }) {
                 {/* <Options userId={post?.userId} /> */}
             </div>
             <div className='flex'>
-                <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
+                <Link href={``}>
+                    <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
+                </Link>
                 <div>
-                    <h2 className='text-md'>{user?.fName} {user?.lName}</h2>
-                    <p className='text-[12px] text-gray-500'>{user?.email}</p>
-                    <p className='text-[12px] text-gray-500'>{calculateTime(post?.createdAt)}</p>
+                    <Link href={``} className='text-md'>{user?.fName} {user?.lName}</Link>
+                    <Link href={``} className='text-[12px] text-gray-500'>{user?.useName}</Link>
+                    <p className='text-[12px] text-gray-500'>{user?.isEdited ? calculateTime(user?.updatedAt) : calculateTime(user?.createdAt)} {user?.isEdited && "• Edited"}</p>
                 </div>
             </div>
             <div>
-                <h2 className='text-lg my-3'>{post?.title}</h2>
-                <p className='text-md my-5'>{post?.description}</p>
+                <Link href={``} className='text-lg my-3'>{post?.title}</Link>
+                <p className='text-sm font-normal text-gray-800 my-5 flex flex-wrap'>
+                    {post?.description?.length > 200 ? post?.description?.slice(0, 150) + '' : post?.description}
+                </p>
+                <div className='flex justify-end my-2 font-normal'>
+                    <span className='text-blue-600 hover:underline cursor-pointer'>... see more</span>
+                </div>
                 <div className='w-full h-[300px]'>
                     <img src={`${server}/images/${post?.postImage}`} width={300} height={300} className='object-cover w-full h-full' />
                 </div>
@@ -122,7 +130,7 @@ function Post({ post }) {
             <div className='mt-5'>
                 <div className='flex justify-between items-center'>
                     <div onClick={handleAddLike} className='flex items-center gap-2 cursor-pointer px-5 py-2 hover:bg-slate-200 transition-all rounded-full'>
-                        <PiThumbsUpThin className={`text-xl ${isLiked ? "text-blue-500" : "text-gray-500"}`} />
+                        {isLiked ? <AiFillLike className='text-xl text-blue-500' /> : <AiOutlineLike className='text-xl text-gray-500' />}
                         <p className='text-gray-500'>Likes {likes?.length}</p>
                     </div>
                     <div onClick={() => setShowComment(!showComment)} className='flex items-center gap-2 cursor-pointer px-5 py-2 hover:bg-slate-200 transition-all rounded-full'>
@@ -137,7 +145,7 @@ function Post({ post }) {
                     <div>
 
                         <div className='flex mt-5'>
-                            <Image src='/user.jpg' width={30} height={30} className='rounded-full mr-3' />
+                            <img src={`${server}/images/${currentUser?.profileImage}`} width={30} height={30} className='rounded-full mr-3' />
                             <form onSubmit={handleAddComment} className='w-[85%]' >
                                 <input value={newComment} onChange={(e) => setNewComment(e.target.value)} type="text" placeholder='Add a comment...' className='w-full outline-none border border-gray-500 rounded-full px-5 py-2' />
                             </form>
