@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import Post from '../models/postModel.js';
 import User from '../models/userModel.js';
+import mongoose from 'mongoose';
 
 
 export const getPost = asyncHandler(async (req, res) => {
@@ -134,7 +135,7 @@ export const likePost = asyncHandler(async (req, res) => {
             return;
         }
 
-        const user = req.user._id; // Assuming req.user contains authenticated user information
+        const user = req.user.id;
         const alreadyLiked = post.likes.includes(user);
 
         if (alreadyLiked) {
@@ -162,7 +163,7 @@ export const commentOnPost = asyncHandler(async (req, res) => {
 
         const newComment = {
             comment,
-            user: req.user._id, // Assuming req.user contains authenticated user information
+            user: req.user.id,
         };
         await Post.findByIdAndUpdate(post._id, { $push: { comments: newComment } }, { new: true });
         res.status(200).json({ message: 'Comment added', success: true });
@@ -266,13 +267,23 @@ export const getPostsForFeed = asyncHandler(async (req, res) => {
             })
             .populate({
                 path: 'likes',
-                populate: {
-                    path: 'user',
-                    select: '_id email profileImage fName lName userName',
-                },
+                select: '_id email profileImage fName lName userName',
             })
             .sort({ createdAt: -1 });
-        res.status(200).json({ posts, success: true });
+        
+        const formattedPostsPromise = posts.map((post) => {
+            const isLikedByUser = post.likes.some((like) => like?.userName === user?.userName);
+            console.log(post.likes.some((like) => like?.userName === user?.userName))
+            const isFollowing = user.following.includes(post.user._id);
+            return {
+                ...post.toObject(),
+                isLikedByUser,
+                isFollowing,
+            };
+        });
+        const formattedPosts = await Promise.all(formattedPostsPromise);
+
+        res.status(200).json({ posts: formattedPosts, success: true });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error });
