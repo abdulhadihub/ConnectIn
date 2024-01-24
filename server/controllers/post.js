@@ -214,10 +214,8 @@ export const getPostsByUserId = asyncHandler(async (req, res) => {
             })
             .populate({
                 path: 'likes',
-                populate: {
-                    path: 'user',
-                    select: '_id email profileImage fName lName userName',
-                },
+                select: '_id email profileImage fName lName userName',
+
             })
             .sort({ createdAt: -1 });
         res.status(200).json({ posts, success: true });
@@ -281,6 +279,21 @@ export const getPostsForFeed = asyncHandler(async (req, res) => {
         const formattedPosts = await Promise.all(formattedPostsPromise);
 
         res.status(200).json({ posts: formattedPosts, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+})
+
+export const deletePost = asyncHandler(async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.postId);
+        if (!post) {
+            res.status(404).json({ message: 'Post not found', success: false });
+            return;
+        }
+        await Post.findByIdAndDelete(req.params.postId);
+        res.json({ message: 'Post deleted', success: true });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error });

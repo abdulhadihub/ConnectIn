@@ -2,12 +2,14 @@ import express from "express";
 import { verifyUser } from "../middleware/verifyUser.js";
 import {
     commentOnPost, createPost, getPost, likePost, getPosts,
-    getPostsByUserId, getPostsForFeed,getPostsOfCurrentUser
+    getPostsByUserId, getPostsForFeed,getPostsOfCurrentUser,
+    deletePost
 } from "../controllers/post.js";
 
 const router = express.Router();
 
 router.post("/create", verifyUser, createPost);
+router.delete("/delete-post/:postId", verifyUser, deletePost);
 router.put("/like/:postId", verifyUser, likePost);
 router.get("/user-posts", verifyUser, getPostsOfCurrentUser);
 router.get("/user-posts/:id", getPostsByUserId);

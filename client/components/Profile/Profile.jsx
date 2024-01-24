@@ -298,11 +298,40 @@ const Profile = ({ user }) => {
   const startIndex = currentPage * postsPerPage;
   const endIndex = startIndex + postsPerPage;
   const currentPosts = postsData?.slice(startIndex, endIndex);
+
+  const deletePost = async (id) => {
+    try {
+      const res = await axios.delete(`${server}/api/post/delete-post/${id}`, {
+        headers: {
+          'x-auth-token': cookies['x-auth-token']
+        }
+      })
+      if (res?.data?.success) {
+        notification.success({
+          message: 'Success',
+          description: res?.data?.message,
+        })
+        setPostsData(postsData.filter(post => post?._id !== id))
+      } else {
+        notification.error({
+          message: 'Error',
+          description: res?.data?.message,
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      notification.error({
+        message: 'Error',
+        description: error?.response?.data?.message,
+      })
+    }
+  }
+  
   const PostList = ({ posts }) => {
     return (
       <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"} gap-7 my-3`}>
         {posts?.length > 0 ? posts?.map((post, index) => (
-          <PostItem key={index} data={post} />
+          <PostItem key={index} data={post} deletePost={deletePost} />
         )) : <div>No Post</div>}
         {!isMobile && posts?.length !== 0 && currentPosts.length < 2 && <div style={{ border: "1px solid grey" }} className=' flex justify-center items-center rounded-lg'>
           <div className='text-center'>
