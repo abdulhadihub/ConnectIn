@@ -41,7 +41,7 @@ function Navbar() {
     return (
         <nav className='h-[50px] fixed w-full bg-white z-[999]'>
             {/* desktop navbar */}
-            <div className='hidden md:grid grid-cols-3 h-full'>
+            <div className='hidden lg:grid grid-cols-3 h-full'>
                 <div className='flex justify-start items-center mx-5'>
                     <Link href='/feed'>
                         <h2 className='text-2xl font-bold flex items-center'>
@@ -72,7 +72,7 @@ function Navbar() {
             </div>
 
             {/* mobile navbar */}
-            <div className='md:hidden'>
+            <div className='lg:hidden'>
                 <MobileNavbar />
             </div>
         </nav>

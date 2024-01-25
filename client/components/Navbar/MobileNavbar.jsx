@@ -32,35 +32,34 @@ function MobileNavbar() {
     return (
         <>
             <div className='relative'>
-                <div className='flex justify-between items-center m-3'>
-                    <div>
+                <div className='grid grid-cols-3 m-3'>
+
+                    <div className='flex gap-5'>
                         <FaBars className='hover:text-blue-500 transition-all cursor-pointer' size={20} onClick={showDrawer} />
+                        <div className='flex justify-center items-center'>
+                            <Link href='/feed'>
+                                <h2 className='text-md font-bold flex items-center'>
+                                    <div className='text-gray-600'>Connect</div>
+                                    <div className='bg-blue-500 text-white rounded-md p-1 flex items-center'>
+                                        <LuLinkedin />
+                                    </div>
+                                </h2>
+                            </Link>
+                        </div>
                     </div>
 
-                    {/* <div className='flex justify-center items-center'>
-                        <Link href='/feed'>
-                            <h2 className='text-md font-bold flex items-center'>
-                                <div className='text-gray-600'>Connect</div>
-                                <div className='bg-blue-500 text-white rounded-md p-1 flex items-center'>
-                                    <LuLinkedin />
-                                </div>
-                            </h2>
-                        </Link>
-                    </div> */}
 
-                    <div className='flex '>
 
-                        <div>
-                            <label className='mx-3 bg-gray-100 flex items-center py-1 px-2 rounded-sm'>
-                                <IoSearch className='text-gray-600 text-md' />
-                                <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none w-[100px]' type="text" />
-                            </label>
-                        </div>
+                    <div>
+                        <label className='mx-3 bg-gray-100 flex items-center py-1 px-2 rounded-sm'>
+                            <IoSearch className='text-gray-600 text-md' />
+                            <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none w-[100px]' type="text" />
+                        </label>
+                    </div>
 
-                        <div className='flex justify-center items-center'>
-                            {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-2 py-1 rounded-md font-bold'>Sign In</button></Link>}
+                    <div className='flex justify-center items-center'>
+                        {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-2 py-1 rounded-md font-bold'>Sign In</button></Link>}
 
-                        </div>
                     </div>
 
                 </div>
