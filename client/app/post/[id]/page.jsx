@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie'
 import Detailed from '@/components/Profile/Detailed'
 
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const [post, setPost] = useState({});
   //eslint-disable-next-line
   const [cookies, setCookie] = useCookies(['x-auth-token']);
@@ -35,4 +35,4 @@ const page = ({ params }) => {
   )
 }
 
-export default page
+export default Page
