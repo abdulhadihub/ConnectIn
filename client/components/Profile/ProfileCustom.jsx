@@ -82,19 +82,6 @@ const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
         {posts.length > 0 ? posts.map((post, index) => (
           <PostItem key={index} data={post} />
         )) : <div>No Post</div>}
-        {!isMobile && posts?.length !== 0 && currentPosts.length < 2 && <div style={{ border: "1px solid grey" }} className=' flex justify-center items-center rounded-lg'>
-          <div className='text-center'>
-            <FaSwatchbook color='blue' size={30} />
-            <div className='text-gray-300'>
-              See all posts
-            </div>
-
-            <div className=' bg-gray-300 mt-10 p-2 rounded-full px-3 cursor-pointer hover:bg-blue-600'>
-              See All Posts
-            </div>
-          </div>
-
-        </div>}
       </div>
       // </div>
     );
