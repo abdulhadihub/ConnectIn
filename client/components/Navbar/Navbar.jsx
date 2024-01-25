@@ -31,7 +31,6 @@ function Navbar() {
             } catch (error) {
                 console.log(error)
 
-
             }
         }
         fetchData()
@@ -52,14 +51,14 @@ function Navbar() {
                             </div>
                         </h2>
                     </Link>
-                    <label className='mx-3 bg-gray-100 flex items-center py-1 px-2 rounded-sm'>
+                    <label className='mx-3 bg-gray-100 flex items-center py-2 px-5 rounded-full'>
                         <IoSearch className='text-gray-600 text-2xl' />
                         <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none' type="text" />
                     </label>
                 </div>
 
                 <div className='flex justify-center items-center gap-10'>
-                    <Link href='/feed'  className='mx-3'>
+                    <Link href='/feed' className='mx-3'>
                         <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
                     </Link>
                     <Link href='/find-friend' className='mx-3'>

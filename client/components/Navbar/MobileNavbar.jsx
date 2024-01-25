@@ -32,34 +32,42 @@ function MobileNavbar() {
     return (
         <>
             <div className='relative'>
-                <div className='grid grid-cols-3 m-3'>
+                <div className='grid grid-cols-12 m-3'>
 
-                    <div className='flex gap-5'>
-                        <FaBars className='hover:text-blue-500 transition-all cursor-pointer' size={20} onClick={showDrawer} />
-                        <div className='flex justify-center items-center'>
-                            <Link href='/feed'>
-                                <h2 className='text-md font-bold flex items-center'>
-                                    <div className='text-gray-600'>Connect</div>
-                                    <div className='bg-blue-500 text-white rounded-md p-1 flex items-center'>
-                                        <LuLinkedin />
-                                    </div>
-                                </h2>
-                            </Link>
+                    <div className="col-span-4">
+
+                        <div className='flex justify-center items-center gap-5'>
+                            <FaBars className='hover:text-blue-500 transition-all cursor-pointer' size={20} onClick={showDrawer} />
+                            <div className='flex justify-center items-center'>
+                                <Link href='/feed'>
+                                    <h2 className='text-md font-bold flex items-center'>
+                                        <div className='text-gray-600'>Connect</div>
+                                        <div className='bg-blue-500 text-white rounded-md p-1 flex items-center'>
+                                            <LuLinkedin />
+                                        </div>
+                                    </h2>
+                                </Link>
+                            </div>
                         </div>
                     </div>
 
 
+                    <div className="col-span-6">
 
-                    <div>
-                        <label className='mx-3 bg-gray-100 flex items-center py-1 px-2 rounded-sm'>
-                            <IoSearch className='text-gray-600 text-md' />
-                            <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none w-[100px]' type="text" />
-                        </label>
+                        <div className='flex justify-end items-center'>
+                            <label className='mx-3 bg-gray-100 flex jitems-center py-2 px-3 rounded-full'>
+                                <IoSearch className='text-gray-600 text-md' />
+                                <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 border-none outline-none hover:border hover:border-black  w-[100px]' type="text" />
+                            </label>
+                        </div>
                     </div>
 
-                    <div className='flex justify-center items-center'>
-                        {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-2 py-1 rounded-md font-bold'>Sign In</button></Link>}
+                    <div className="col-span-2">
 
+                        <div className='flex justify-center items-center'>
+                            {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-2 py-1 rounded-md font-bold'>Sign In</button></Link>}
+
+                        </div>
                     </div>
 
                 </div>
