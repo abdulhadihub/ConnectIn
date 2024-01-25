@@ -104,7 +104,7 @@ const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
       message: 'Error',
       description: 'Please Login First',
     })
-    if (isBlockedByUser) return notification.error({
+    if (isBlockedBy) return notification.error({
       message: 'Error',
       description: 'You are blocked by this user',
     })

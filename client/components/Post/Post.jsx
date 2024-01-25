@@ -76,7 +76,14 @@ function Post({ post }) {
                 if (data?.success) {
                     setNewComment('')
                     const newCommentObj = {
-                        user: currentUser._id,
+                        user: {
+                            _id: currentUser?._id,
+                            fName: currentUser?.fName,
+                            lName: currentUser?.lName,
+                            userName: currentUser?.userName,
+                            profileImage: currentUser?.profileImage
+                        },
+                        _id: data?.comment?._id,
                         comment: newComment,
                         createdAt: Date.now()
 

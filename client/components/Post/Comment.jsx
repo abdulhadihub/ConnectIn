@@ -4,9 +4,6 @@ import server from '@/utils/server';
 import { useUserById } from '@/utils/Hooks/UseHooks';
 import { useUser } from '@/utils/Context/UserContext';
 import { FaEdit, FaReply } from 'react-icons/fa';
-import axios from 'axios';
-import { notification } from 'antd';
-import { useCookies } from 'react-cookie';
 import { MdDelete } from 'react-icons/md';
 
 function Comment({ comment, handleEdited, handleDeleted, replyToComment }) {
