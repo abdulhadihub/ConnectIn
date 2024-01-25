@@ -41,7 +41,7 @@ function page() {
                         </div>
 
                         <div className='col-span-12 md:col-span-10 lg:col-span-7'>
-                            <div className='flex text-sm justify-end my-3'>
+                            {/* <div className='flex text-sm justify-end my-3'>
 
                                 Sort by: <select className='border border-gray-300 rounded-md px-2 py-1 ml-2'>
                                     <option>Top</option>
