@@ -6,8 +6,8 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import server from '@/utils/server';
 
-export default function isAuth(Component) {
-    return function isAuth(props) {
+export default function IsAuth(Component) {
+    return function IsAuth(props) {
         const [cookies] = useCookies(['x-auth-token']);
         const { user, updateUser } = useUser();
         const token = cookies["x-auth-token"];

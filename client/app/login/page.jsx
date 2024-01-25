@@ -1,7 +1,7 @@
 import React from 'react'
 import Login from '@/components/Forms/Login'
 
-function page() {
+function Page() {
     return (
         <>
             <div className='bg-slate-100 h-[90vh] flex flex-col justify-center items-center'>
@@ -16,4 +16,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

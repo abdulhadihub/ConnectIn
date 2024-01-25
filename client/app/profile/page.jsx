@@ -1,10 +1,10 @@
 'use client'
 import Profile from '@/components/Profile/Profile'
 import React from 'react'
-import isAuth from '@/components/isAuth/isAuth'
+import isAuth from '@/components/isAuth/isAuth.jsx'
 import { useUser } from '@/utils/Context/UserContext'
 
-const page = () => {
+const Page = () => {
   const { user } = useUser()
   return (
     <div className='bg-[#F4F2EE]'>
@@ -13,4 +13,4 @@ const page = () => {
   )
 }
 
-export default isAuth(page)
+export default isAuth(Page)

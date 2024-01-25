@@ -2,7 +2,7 @@ import React from 'react'
 import Register from '@/components/Forms/Register'
 
 
-function page() {
+function Page() {
     return (
         <>
             <div className='bg-slate-100 flex flex-col justify-center items-center'>
@@ -17,4 +17,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

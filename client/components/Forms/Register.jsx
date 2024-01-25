@@ -16,6 +16,8 @@ import { useRouter } from 'next/navigation';
 const App = () => {
     const [form] = Form.useForm();
     const route = useRouter();
+    const { Option } = Select;
+
     const onFinish = async (values) => {
         console.log('Received values of form: ', values);
         try {

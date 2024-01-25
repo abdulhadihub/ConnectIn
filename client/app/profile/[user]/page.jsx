@@ -6,7 +6,7 @@ import { useUserById, useUserByUsername } from '@/utils/Hooks/UseHooks'
 import { useUser } from '@/utils/Context/UserContext'
 import { redirect } from 'next/navigation';
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
     // const { user, loading, error } = useUserById(params?.user)
     const { user, loading, error } = useUserByUsername(params?.user)
     const { user: currentUser } = useUser()
@@ -18,9 +18,9 @@ const page = ({ params }) => {
 
     return (
         <div className='bg-[#F4F2EE]'>
-        <ProfileCustom user={user?.user} isFollowing={user?.isFollowing} isBlocked={user?.isBlocked} isBlockedBy={user?.isBlockedBy} />
+            <ProfileCustom user={user?.user} isFollowing={user?.isFollowing} isBlocked={user?.isBlocked} isBlockedBy={user?.isBlockedBy} />
         </div>
     )
 }
 
-export default page
+export default Page
