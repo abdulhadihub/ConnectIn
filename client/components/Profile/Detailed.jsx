@@ -14,8 +14,12 @@ import server from '@/utils/server';
 import Link from 'next/link'
 import { FaEdit } from 'react-icons/fa';
 import EditPost from '../Post/EditPost';
+import { useCookies } from 'react-cookie'
+import axios from 'axios'
+
 
 const Detailed = ({ post }) => {
+    const [cookies, setCookie] = useCookies(['x-auth-token']);
     const [showComment, setShowComment] = useState(false)
     const [newComment, setNewComment] = useState('')
     const { user, loading, error } = useUserById(post?.user?._id)
@@ -24,25 +28,32 @@ const Detailed = ({ post }) => {
     const { addLike } = useAddLike()
     const [postData, setPostData] = useState(post)
 
-    const handleAddComment = async (e) => {
-        e.preventDefault()
-        try {
-            const data = await addComment(post?._id, newComment)
-            if (data?.success) {
-                setNewComment('')
-                const newCommentObj = {
-                    user: currentUser._id,
-                    comment: newComment,
-                    createdAt: Date.now()
+    const [isCommentEdited, setIsCommentEdited] = useState(false)
+    const [comment, setComment] = useState()
 
+    const handleEdited = (comment) => {
+        setIsCommentEdited(true)
+        setComment(comment)
+        setNewComment(comment?.comment)
+    }
+    const handleDeleted = (comment) => {
+        deleteComment(comment?._id)
+    }
+
+    const editComment = async (commentId, newComment) => {
+        try {
+            const { data } = await axios.put(`${server}/api/post/comment/${post?._id}/edit/${commentId}`, { newCommentText: newComment }, {
+                headers: {
+                    'x-auth-token': cookies['x-auth-token']
                 }
-                let newComments = [...comments]
-                newComments.unshift(newCommentObj)
-                setComments(newComments)
+            })
+            if (data?.success) {
                 notification.success({
                     message: 'Success',
                     description: data?.message,
                 })
+                setComments(comments.map(comment => comment?._id === commentId ? { ...comment, comment: newComment } : comment))
+                setNewComment('')
             }
             else {
                 notification.error({
@@ -54,8 +65,54 @@ const Detailed = ({ post }) => {
         catch (err) {
             console.log(err)
         }
+    }
+    const handleAddComment = async (e) => {
+        e.preventDefault()
+        if (isCommentEdited) {
+            editComment(comment?._id, newComment)
+            setIsCommentEdited(false)
+            return
+        } else {
+            try {
+                const data = await addComment(post?._id, newComment)
+                if (data?.success) {
+                    setNewComment('')
+                    const newCommentObj = {
+                        user: {
+                            _id: currentUser?._id,
+                            fName: currentUser?.fName,
+                            lName: currentUser?.lName,
+                            userName: currentUser?.userName,
+                            profileImage: currentUser?.profileImage
+                        },
+                        _id: data?.comment?._id,
+                        comment: newComment,
+                        createdAt: Date.now()
+
+                    }
+                    let newComments = [...comments]
+                    newComments.unshift(newCommentObj)
+                    setComments(newComments)
+                    notification.success({
+                        message: 'Success',
+                        description: data?.message,
+                    })
+                }
+                else {
+                    notification.error({
+                        message: 'Error',
+                        description: data?.message,
+                    })
+                }
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
 
     }
+
 
     const handleAddLike = async () => {
         try {
@@ -108,6 +165,85 @@ const Detailed = ({ post }) => {
     const update = (post) => {
         setPostData(post)
     }
+
+
+    const deleteComment = async (commentId) => {
+        try {
+            const { data } = await axios.delete(`${server}/api/post/comment/${post?._id}/edit/${commentId}`, {
+                headers: {
+                    'x-auth-token': cookies['x-auth-token']
+                }
+            })
+            if (data?.success) {
+                notification.success({
+                    message: 'Success',
+                    description: data?.message,
+                })
+                setComments(comments.filter(comment => comment?._id !== commentId))
+            }
+            else {
+                notification.error({
+                    message: 'Error',
+                    description: data?.message,
+                })
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const replyToComment = async (commentId, reply) => {
+        try {
+            const { data } = await axios.put(`${server}/api/post/reply-comment/${post?._id}/edit/${commentId}`, { replyText: reply }, {
+                headers: {
+                    'x-auth-token': cookies['x-auth-token']
+                }
+            })
+            if (data?.success) {
+                notification.success({
+                    message: 'Success',
+                    description: data?.message,
+                })
+                const da = {
+                    user: {
+                        _id: currentUser?._id,
+                        fName: currentUser?.fName,
+                        lName: currentUser?.lName,
+                        userName: currentUser?.userName,
+                        profileImage: currentUser?.profileImage
+                    },
+                    _id: Date.now(),
+                    comment: reply,
+                    createdAt: Date.now()
+                }
+                const arr = []
+                const commentPromise = comments.map((comment) => {
+                    if (comment?._id === commentId) {
+                        if (!comment?.reply) {
+                            arr.push(da)
+                        }else{
+                            arr.push(...comment?.reply)
+                            arr.push(da)
+                        }
+                    }
+                    return { ...comment, reply: arr }
+                })
+
+                setComments(commentPromise)
+            }
+            else {
+                notification.error({
+                    message: 'Error',
+                    description: data?.message,
+                })
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
     if (loading) return <div>Loading...</div>
 
     return (
@@ -170,14 +306,14 @@ const Detailed = ({ post }) => {
                         </div>
                         <div className='mt-5'>
                             {comments?.map((comment, index) => (
-                                <Comment key={index} comment={comment} />
+                                <Comment key={index} comment={comment} handleEdited={handleEdited} replyToComment={replyToComment} handleDeleted={handleDeleted} />
                             ))}
                         </div>
                     </div>
                 )
             }
 
-            <Modal width={1000} title={`Edit Post`}  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+            <Modal width={1000} title={`Edit Post`} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
                 footer={null}
             >
                 <EditPost post={post} updateData={update} hidemodal={handleOk} />

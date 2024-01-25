@@ -11,10 +11,14 @@ import { useCookies } from 'react-cookie'
 import server from '@/utils/server'
 
 function Page() {
+    const [load, setLoad] = useState(false);
     const { user } = useUser();
     const [posts, setPosts] = useState([]);
     //eslint-disable-next-line
     const [cookies, setCookie] = useCookies(['x-auth-token']);
+    const reload = () => {
+        setLoad(!load);
+    }
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -30,7 +34,7 @@ function Page() {
             }
         }
         fetchPosts();
-    }, [])
+    }, [load])
     return (
         <>
             <div className='w-full bg-[#f4f2ee]'>
@@ -51,7 +55,7 @@ function Page() {
                             <div className='flex flex-col'>
                                 {posts?.length === 0 && <div className='text-center text-gray-500'>No posts to show</div>}
                                 {posts?.map((post, index) => (
-                                    <Post key={index} post={post} />
+                                    <Post key={index} post={post} reload={reload} />
                                 ))}
                             </div>
 

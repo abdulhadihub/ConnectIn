@@ -15,7 +15,7 @@ import Link from 'next/link'
 import axios from 'axios'
 import { useCookies } from 'react-cookie';
 
-function Post({ post }) {
+function Post({ post, reload }) {
     const [showComment, setShowComment] = useState(false)
     const [cookies, setCookie] = useCookies(['x-auth-token'])
     const [comments, setComments] = useState(post?.comments)
@@ -177,8 +177,32 @@ function Post({ post }) {
                     message: 'Success',
                     description: data?.message,
                 })
-                // setComments(comments.map(comment => comment?._id === commentId ? { ...comment, replies: [...comment?.replies, { reply }] } : comment))
+                const da = {
+                    user: {
+                        _id: currentUser?._id,
+                        fName: currentUser?.fName,
+                        lName: currentUser?.lName,
+                        userName: currentUser?.userName,
+                        profileImage: currentUser?.profileImage
+                    },
+                    _id: Date.now(),
+                    comment: reply,
+                    createdAt: Date.now()
+                }
+                const arr = []
+                const commentPromise = comments.map((comment) => {
+                    if (comment?._id === commentId) {
+                        if (!comment?.reply) {
+                            arr.push(da)
+                        }else{
+                            arr.push(...comment?.reply)
+                            arr.push(da)
+                        }
+                    }
+                    return { ...comment, reply: arr }
+                })
 
+                setComments(commentPromise)
             }
             else {
                 notification.error({
