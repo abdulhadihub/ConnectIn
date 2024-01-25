@@ -9,18 +9,20 @@ import Comment from '@/components/Post/Comment'
 import calculateTime from '@/utils/calculateTime';
 import { useUserById, useCommentOnPost, useAddLike } from '@/utils/Hooks/UseHooks';
 import { useUser } from '@/utils/Context/UserContext';
-import { notification } from 'antd';
+import { Modal, notification } from 'antd';
 import server from '@/utils/server';
 import Link from 'next/link'
+import { FaEdit } from 'react-icons/fa';
+import EditPost from '../Post/EditPost';
 
 const Detailed = ({ post }) => {
-    console.log("here", post)
     const [showComment, setShowComment] = useState(false)
     const [newComment, setNewComment] = useState('')
     const { user, loading, error } = useUserById(post?.user?._id)
     const { user: currentUser } = useUser()
     const { addComment } = useCommentOnPost()
     const { addLike } = useAddLike()
+    const [postData, setPostData] = useState(post)
 
     const handleAddComment = async (e) => {
         e.preventDefault()
@@ -90,7 +92,22 @@ const Detailed = ({ post }) => {
         setLikes(post?.likes)
         setComments(post?.comments?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)))
         setIsLiked(post?.isLikedByUser)
+        setPostData(post)
     }, [post, loading])
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const update = (post) => {
+        setPostData(post)
+    }
     if (loading) return <div>Loading...</div>
 
     return (
@@ -105,16 +122,26 @@ const Detailed = ({ post }) => {
                 <div>
                     <Link href={`/profile/${user?.userName}`} className='text-md block'>{user?.fName} {user?.lName}</Link>
                     <Link href={`/profile/${user?.userName}`} className='block text-[12px] text-black'>@{user?.userName}</Link>
-                    <p className='text-[12px] text-gray-500'>{post?.isEdited ? calculateTime(post?.updatedAt) : calculateTime(post?.createdAt)} {post?.isEdited && "• Edited"}</p>
+                    <p className='text-[12px] text-gray-500'>{postData?.isEdited ? calculateTime(postData?.postUpdatedAt) : calculateTime(postData?.createdAt)} {postData?.isEdited && "• Edited"}</p>
                 </div>
             </div>
             <div>
-                <div className='text-lg my-3'>{post?.title}</div>
+                <div className='flex justify-between'>
+                    <div className='text-lg my-3'>{postData?.title}</div>
+                    {post?.user?._id === currentUser?._id && <div onClick={() => setIsModalOpen(true)}><FaEdit className='text-xl text-gray-500 cursor-pointer' /></div>}
+                </div>
                 <p className='text-sm font-normal text-gray-800 my-5 flex flex-wrap'>
-                    {post?.description}
+                    {postData?.description}
                 </p>
-                <div className='w-full h-[300px]'>
-                    <img src={`${server}/images/${post?.postImage}`} width={300} height={300} className='object-cover w-full h-full' />
+                <div className='w-full h-[600px]'>
+                    <img src={`${server}/images/${postData?.postImage}`} className='object-fit w-full h-full' />
+                </div>
+
+                <div className='flex flex-wrap my-4'>
+                    {postData?.interests?.map((interest, index) => (
+                        <span key={index} className='bg-gray-200 px-3 py-1 rounded-full text-sm mr-3'>{interest}</span>
+                    ))
+                    }
                 </div>
             </div>
 
@@ -149,6 +176,12 @@ const Detailed = ({ post }) => {
                     </div>
                 )
             }
+
+            <Modal width={1000} title={`Edit Post`}  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+                footer={null}
+            >
+                <EditPost post={post} updateData={update} hidemodal={handleOk} />
+            </Modal>
         </div>
     )
 }

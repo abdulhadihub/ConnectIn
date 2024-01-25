@@ -349,3 +349,31 @@ export const deletePost = asyncHandler(async (req, res) => {
         res.status(500).json({ error });
     }
 })
+
+export const updatePost = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const post = await Post.findById(req.params.postId);
+        if (!post) {
+            res.status(404).json({ message: 'Post not found', success: false });
+            return;
+        }
+        if (post?.user?.toString() !== user?._id?.toString()) {
+            res.status(401).json({ message: 'Not authorized', success: false });
+            return;
+        }
+        const { title, description, postImage, interests } = req.body;
+        const updatedPost = await Post.findByIdAndUpdate(req.params.postId, {
+            title,
+            description,
+            postImage,
+            interests,
+            isEdited: true,
+            postUpdatedAt: Date.now(),
+        }, { new: true });
+        res.status(200).json({ message: 'Post updated', success: true, updatedPost });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+})

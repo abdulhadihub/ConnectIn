@@ -49,6 +49,7 @@ const postScheme = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    postUpdatedAt: Date,
     interests: [String],
 }, {
     timestamps: true

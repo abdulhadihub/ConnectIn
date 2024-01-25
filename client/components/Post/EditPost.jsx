@@ -9,15 +9,17 @@ import { useCookies } from 'react-cookie';
 import { useUser } from '@/utils/Context/UserContext';
 import { useRouter } from 'next/navigation';
 
-const EditPost = ({post}) => {
+const EditPost = ({ post, updateData, hidemodal }) => {
     const [image, setImage] = useState('');
     const route = useRouter();
     const { user } = useUser();
     const [cookies] = useCookies(['x-auth-token']);
     const [postData, setPostData] = useState(post);  // State to store post data
+    const [previousImage, setPreviousImage] = useState(post?.postImage);
 
 
     const handleUpdate = async (values) => {
+        values.postImage = previousImage;
         if (image) {
             const dataa = new FormData();
             const filename = Date.now() + image.name;
@@ -46,7 +48,8 @@ const EditPost = ({post}) => {
                     message: 'Success',
                     description: res?.data?.message,
                 });
-                route.push('/feed');
+                updateData({ ...postData, ...values, isEdited: true, postUpdatedAt: Date.now() });
+                hidemodal();
             } else {
                 notification.error({
                     message: 'Error',
@@ -63,15 +66,15 @@ const EditPost = ({post}) => {
     };
 
     return (
-        <div className='sm:mx-56 mx-10 py-6'>
+        <div className='mx-10 py-6'>
             <h1 className='text-center font-bold text-2xl my-3'>Edit Post</h1>
-            <Form layout='vertical' onFinish={handleUpdate} className='bg-white rounded-lg' 
-            initialValues={{
-                title: postData?.title,
-                interests: postData?.interests,
-                description: postData?.description,
-            }}>
-            <div className='px-4'>
+            <Form layout='vertical' onFinish={handleUpdate} className='bg-white rounded-lg'
+                initialValues={{
+                    title: postData?.title,
+                    interests: postData?.interests,
+                    description: postData?.description,
+                }}>
+                <div className='px-4'>
                     <div className='flex p-4 items-center'>
                         <img src={`${server}/images/${user?.profileImage}`} className='rounded-full h-10 w-10' alt='profile' />
                         <p className='ml-2'>{user?.fName} {user?.lName}</p>
@@ -120,16 +123,11 @@ const EditPost = ({post}) => {
                         <Input.TextArea rows={10} placeholder='What do you want to talk about?' />
                     </Form.Item>
 
-                    <img width={200} className=""
-                        src={
-                            image
-                                ? URL.createObjectURL(image)
-                                : ``
-                        } alt="" />
+                    <img width={200} className="" src={previousImage && !image ? `${server}/images/${previousImage}` : image ? URL.createObjectURL(image) : ``} alt="" />
                     <div className='flex justify-between items-center px-4 py-2'>
                         <label className='flex items-center hover:bg-green-200 cursor-pointer p-3 rounded-full'>
                             <GrGallery size={20} color='grey' className='mx-2' />
-                            <div>Add Media</div>
+                            <div>Chanage Media</div>
                             <input
                                 name='image'
                                 type="file"
@@ -139,11 +137,11 @@ const EditPost = ({post}) => {
                             />
                         </label>
                         <Form.Item
-                        className='mb-[-2px]'
+                            className='mb-[-2px]'
                         >
                             <button className='flex items-center text-md font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 p-3 rounded-full'>
                                 <IoSendOutline size={20} className='mr-2' />
-                                <div> Post </div>
+                                <div> Update Post </div>
                             </button>
                         </Form.Item>
                     </div>

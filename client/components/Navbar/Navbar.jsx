@@ -8,7 +8,7 @@ import axios from 'axios';
 import server from '@/utils/server';
 import { useCookies } from 'react-cookie';
 import { useUser } from '@/utils/Context/UserContext';
-import { FaUserPlus } from "react-icons/fa6";
+import { FaPlus, FaUserPlus } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import MobileNavbar from './MobileNavbar';
 
@@ -57,15 +57,15 @@ function Navbar() {
                         <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none' type="text" />
                     </label>
                 </div>
-
-                <div className='flex justify-center items-center gap-10'>
-                    <Link href='/feed'  className='mx-3'>
-                        <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
-                    </Link>
-                    <Link href='/find-friend' className='mx-3'>
-                        <FaUserPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
-                    </Link>
-                </div>
+                {user ?
+                    <div className='flex justify-center items-center gap-10'>
+                        <Link title='Home' href='/feed' className='mx-3'>
+                            <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
+                        </Link>
+                        <Link title='Create Post' href='/create-post' className='mx-3'>
+                            <FaPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
+                        </Link>
+                    </div> : <div className='flex justify-center items-center gap-10'></div>}
                 <div className='flex justify-center items-center'>
                     {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-5 py-2 rounded-md font-bold'>Sign In</button></Link>}
 

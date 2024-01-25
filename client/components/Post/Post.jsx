@@ -100,7 +100,7 @@ function Post({ post }) {
                 <div>
                     <Link href={`/profile/${user?.userName}`} className='text-md block'>{user?.fName} {user?.lName}</Link>
                     <Link href={`/profile/${user?.userName}`} className='block text-[12px] text-black'>@{user?.userName}</Link>
-                    <p className='text-[12px] text-gray-500'>{post?.isEdited ? calculateTime(post?.updatedAt) : calculateTime(post?.createdAt)} {post?.isEdited && "• Edited"}</p>
+                    <p className='text-[12px] text-gray-500'>{post?.isEdited ? calculateTime(post?.postUpdatedAt) : calculateTime(post?.createdAt)} {post?.isEdited && "• Edited"}</p>
                 </div>
             </div>
             <div>
