@@ -1,7 +1,7 @@
 import React from 'react'
 import CreatePost from '@/components/Post/CreatePost'
 
-const page = () => {
+const Page = () => {
   return (
     <div className='bg-[#F4F2EE]'>
       <CreatePost />
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

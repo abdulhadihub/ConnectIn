@@ -4,13 +4,13 @@ import UserWidget from '@/components/UserWidget/UserWidget'
 import Post from '@/components/Post/Post'
 import SuggestionsWidget from '@/components/SuggestionsWidget/SuggestionsWidget'
 import { useUser } from '@/utils/Context/UserContext'
-import isAuth from '@/components/isAuth/isAuth'
+import isAuth from '@/components/isAuth/isAuth.jsx'
 import { feedPosts } from '@/utils/data'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
 import server from '@/utils/server'
 
-function page() {
+function Page() {
     const { user } = useUser();
     const [posts, setPosts] = useState([]);
     //eslint-disable-next-line
@@ -66,4 +66,4 @@ function page() {
     )
 }
 
-export default isAuth(page)
+export default isAuth(Page)
