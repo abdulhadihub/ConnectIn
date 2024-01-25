@@ -10,6 +10,7 @@ import { useCookies } from 'react-cookie';
 import { useUser } from '@/utils/Context/UserContext';
 import { FaUserPlus } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
+import MobileNavbar from './MobileNavbar';
 
 
 function Navbar() {
@@ -30,6 +31,7 @@ function Navbar() {
             } catch (error) {
                 console.log(error)
 
+
             }
         }
         fetchData()
@@ -39,7 +41,8 @@ function Navbar() {
 
     return (
         <nav className='h-[50px] fixed w-full bg-white z-[999]'>
-            <div className='grid grid-cols-3 h-full'>
+            {/* desktop navbar */}
+            <div className='hidden lg:grid grid-cols-3 h-full'>
                 <div className='flex justify-start items-center mx-5'>
                     <Link href='/feed'>
                         <h2 className='text-2xl font-bold flex items-center'>
@@ -55,19 +58,23 @@ function Navbar() {
                     </label>
                 </div>
 
-                {user ?
-                    <div className='flex justify-center items-center gap-10'>
-                        <Link href='/feed' className='mx-3'>
-                            <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
-                        </Link>
-                        <Link href='/find-friend' className='mx-3'>
-                            <FaUserPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
-                        </Link>
-                    </div>:<div className='flex justify-center items-center gap-10'></div>}
+                <div className='flex justify-center items-center gap-10'>
+                    <Link href='/feed'  className='mx-3'>
+                        <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
+                    </Link>
+                    <Link href='/find-friend' className='mx-3'>
+                        <FaUserPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
+                    </Link>
+                </div>
                 <div className='flex justify-center items-center'>
                     {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-5 py-2 rounded-md font-bold'>Sign In</button></Link>}
 
                 </div>
+            </div>
+
+            {/* mobile navbar */}
+            <div className='lg:hidden'>
+                <MobileNavbar />
             </div>
         </nav>
     )

@@ -284,8 +284,8 @@ const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
                 </CopyToClipboard>
               </div>
               <div className='px-4'>
-                <div className='text-[10px] text-gray-500'>
-                  <Link className='hover:underline' target='_blank' href={`${client}/profile/${user?.userName || ""}`}>{client}/profile/{user?.userName}</Link>
+                <div className='text-[10px] text-gray-500 break-all  '>
+                  <Link className='hover:underline ' target='_blank' href={`${client}/profile/${user?.userName || ""}`}>{client}/profile/{user?.userName}</Link>
                 </div>
               </div>
             </div>

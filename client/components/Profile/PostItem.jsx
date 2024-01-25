@@ -70,16 +70,16 @@ const PostItem = ({ data, deletePost }) => {
                             <FaRegCommentDots size={16} color='gray' className='mx-2' />  Comments {data?.comments?.length}
                         </div>
                     </div>
-                    {/* <div className='flex justify-between items-center px-2 my-2'>
-                        <div className='flex justify-center items-center hover:bg-blue-100 p-2 rounded-full cursor-pointer'>
+                    {/* <div className='grid grid-cols-3 px-2 my-2'>
+                        <div className='flex flex-col md:flex-row justify-center items-center hover:bg-blue-100 p-2 rounded-full cursor-pointer'>
                             <AiOutlineLike size={20} color='blue' className='mx-2' />
                             <span className='text-sm text-gray-500'>Like</span>
                         </div>
-                        <div className='flex justify-center items-center  hover:bg-green-100 p-2 rounded-full cursor-pointer'>
+                        <div className='flex flex-col md:flex-row justify-center items-center  hover:bg-green-100 p-2 rounded-full cursor-pointer'>
                             <FaRegCommentDots size={20} color='gray' className='mx-2' />
                             <span className='text-sm text-gray-500'>Comment</span>
                         </div>
-                        <div className='flex justify-center items-center  hover:bg-purple-200 p-2 rounded-full cursor-pointer'>
+                        <div className='flex flex-col md:flex-row justify-center items-center  hover:bg-purple-200 p-2 rounded-full cursor-pointer'>
                             <IoShareSocialSharp size={20} color='gray' className='mx-2' />
                             <span className='text-sm text-gray-500'>Share</span>
                         </div>
