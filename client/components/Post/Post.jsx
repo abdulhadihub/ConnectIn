@@ -145,8 +145,8 @@ function Post({ post }) {
 
                         <div className='flex mt-5'>
                             <img src={`${server}/images/${currentUser?.profileImage}`} width={30} height={30} className='rounded-full mr-3' />
-                            <form onSubmit={handleAddComment} className='w-[85%]' >
-                                <input value={newComment} onChange={(e) => setNewComment(e.target.value)} type="text" placeholder='Add a comment...' className='w-full outline-none border border-gray-500 rounded-full px-5 py-2' />
+                            <form onSubmit={handleAddComment} className='w-[80%]' >
+                                <input value={newComment} onChange={(e) => setNewComment(e.target.value)} type="text" placeholder='Add a comment...' className='w-full outline-none border border-gray-500 rounded-full px-3 py-2' />
                             </form>
                         </div>
                         <div className='mt-5'>

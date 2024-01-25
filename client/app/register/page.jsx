@@ -7,7 +7,7 @@ function page() {
         <>
             <div className='bg-slate-100 flex flex-col justify-center items-center'>
 
-                <h1 className='text-center text-2xl'>Make the most of your life,<br /> make connections</h1>
+                <h1 className='text-center text-2xl my-5'>Make the most of your life,<br /> make connections</h1>
                 <div className='md:w-[400px] flex justify-center items-center bg-white px-3 py-5 rounded-lg shadow-md my-5'>
 
                     <Register />
