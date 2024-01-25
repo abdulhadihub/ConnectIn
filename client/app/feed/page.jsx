@@ -49,6 +49,7 @@ function Page() {
                                 </select>
                             </div> */}
                             <div className='flex flex-col'>
+                                {posts?.length === 0 && <div className='text-center text-gray-500'>No posts to show</div>}
                                 {posts?.map((post, index) => (
                                     <Post key={index} post={post} />
                                 ))}

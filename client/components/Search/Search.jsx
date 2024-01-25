@@ -8,7 +8,7 @@ function Search({ users, loading, error }) {
         <div className='bg-[#f4f2ee]'>
             <div className='sm:mx-40 mx-10 py-5'>
                 <div className='flex flex-col items-center'>
-                    <div className='text-2xl font-bold text-gray-600'>Loading</div>
+                    <div className='text-2xl font-bold text-gray-600'>Loading...</div>
                 </div>
             </div>
         </div>

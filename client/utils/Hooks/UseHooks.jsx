@@ -180,17 +180,12 @@ export const useUserByUsername = (username) => {
 export const useSearch = (query) => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [cookies] = useCookies(['x-auth-token']);
     const [users, setUsers] = useState([])
 
     useEffect(() => {
         async function getUser() {
             try {
-                const { data } = await axios.get(`${server}/api/user/search/${query}`, {
-                    headers: {
-                        'x-auth-token': cookies['x-auth-token']
-                    }
-                })
+                const { data } = await axios.get(`${server}/api/user/search/${query}`)
                 setUsers(data.users)
                 setLoading(false)
             } catch (err) {

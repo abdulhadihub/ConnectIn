@@ -44,7 +44,7 @@ const UserDropdown = () => {
                         <h3 className='font-bold'>
                             Manage
                         </h3>
-                        <p className='text-gray-500 text-sm my-1 hover:underline'>Posts</p>
+                        <Link href={"/profile"} className='text-gray-500 text-sm my-1 hover:underline'>Posts</Link>
                     </div>
 
                     <div>

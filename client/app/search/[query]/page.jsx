@@ -2,6 +2,7 @@
 import React from 'react'
 import { useSearch } from '@/utils/Hooks/UseHooks'
 import Seach from '@/components/Search/Search'
+import isAuth from '@/components/isAuth/isAuth.jsx'
 
 function Page({ params }) {
     const { query } = params
@@ -17,4 +18,4 @@ function Page({ params }) {
     )
 }
 
-export default Page
+export default isAuth(Page)

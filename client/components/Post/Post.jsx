@@ -12,9 +12,12 @@ import { useUser } from '@/utils/Context/UserContext';
 import { notification } from 'antd';
 import server from '@/utils/server';
 import Link from 'next/link'
+import axios from 'axios'
+import { useCookies } from 'react-cookie';
 
 function Post({ post }) {
     const [showComment, setShowComment] = useState(false)
+    const [cookies, setCookie] = useCookies(['x-auth-token'])
     const [comments, setComments] = useState(post?.comments)
     const [newComment, setNewComment] = useState('')
     const [likes, setLikes] = useState(post?.likes)
@@ -23,26 +26,32 @@ function Post({ post }) {
     const { addComment } = useCommentOnPost()
     const { addLike } = useAddLike()
     const [isLiked, setIsLiked] = useState(post?.isLikedByUser)
+    const [isCommentEdited, setIsCommentEdited] = useState(false)
+    const [comment, setComment] = useState()
 
-    const handleAddComment = async (e) => {
-        e.preventDefault()
+    const handleEdited = (comment) => {
+        setIsCommentEdited(true)
+        setComment(comment)
+        setNewComment(comment?.comment)
+    }
+    const handleDeleted = (comment) => {
+        deleteComment(comment?._id)
+    }
+
+    const editComment = async (commentId, newComment) => {
         try {
-            const data = await addComment(post?._id, newComment)
-            if (data?.success) {
-                setNewComment('')
-                const newCommentObj = {
-                    user: currentUser._id,
-                    comment: newComment,
-                    createdAt: Date.now()
-
+            const { data } = await axios.put(`${server}/api/post/comment/${post?._id}/edit/${commentId}`, { newCommentText: newComment }, {
+                headers: {
+                    'x-auth-token': cookies['x-auth-token']
                 }
-                let newComments = [...comments]
-                newComments.unshift(newCommentObj)
-                setComments(newComments)
+            })
+            if (data?.success) {
                 notification.success({
                     message: 'Success',
                     description: data?.message,
                 })
+                setComments(comments.map(comment => comment?._id === commentId ? { ...comment, comment: newComment } : comment))
+                setNewComment('')
             }
             else {
                 notification.error({
@@ -54,6 +63,44 @@ function Post({ post }) {
         catch (err) {
             console.log(err)
         }
+    }
+    const handleAddComment = async (e) => {
+        e.preventDefault()
+        if (isCommentEdited) {
+            editComment(comment?._id, newComment)
+            setIsCommentEdited(false)
+            return
+        } else {
+            try {
+                const data = await addComment(post?._id, newComment)
+                if (data?.success) {
+                    setNewComment('')
+                    const newCommentObj = {
+                        user: currentUser._id,
+                        comment: newComment,
+                        createdAt: Date.now()
+
+                    }
+                    let newComments = [...comments]
+                    newComments.unshift(newCommentObj)
+                    setComments(newComments)
+                    notification.success({
+                        message: 'Success',
+                        description: data?.message,
+                    })
+                }
+                else {
+                    notification.error({
+                        message: 'Error',
+                        description: data?.message,
+                    })
+                }
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
 
     }
 
@@ -85,11 +132,64 @@ function Post({ post }) {
         }
     }
 
+    const deleteComment = async (commentId) => {
+        try {
+            const { data } = await axios.delete(`${server}/api/post/comment/${post?._id}/edit/${commentId}`, {
+                headers: {
+                    'x-auth-token': cookies['x-auth-token']
+                }
+            })
+            if (data?.success) {
+                notification.success({
+                    message: 'Success',
+                    description: data?.message,
+                })
+                setComments(comments.filter(comment => comment?._id !== commentId))
+            }
+            else {
+                notification.error({
+                    message: 'Error',
+                    description: data?.message,
+                })
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const replyToComment = async (commentId, reply) => {
+        try {
+            const { data } = await axios.put(`${server}/api/reply-comment/${commentId}`, { reply }, {
+                headers: {
+                    'x-auth-token': cookies['x-auth-token']
+                }
+            })
+            if (data?.success) {
+                notification.success({
+                    message: 'Success',
+                    description: data?.message,
+                })
+                setComments(comments.map(comment => comment?._id === commentId ? { ...comment, reply } : comment))
+            }
+            else {
+                notification.error({
+                    message: 'Error',
+                    description: data?.message,
+                })
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
     if (loading) return <div>Loading...</div>
     if (error) return <div>{error}</div>
 
     return (
-        <div className='bg-white shadow-md rounded-md p-3 relative '>
+        <div className='bg-white shadow-md rounded-md p-3 relative  my-2'>
             <div className='absolute top-5 right-5'>
                 {/* <Options userId={post?.userId} /> */}
             </div>
@@ -151,7 +251,7 @@ function Post({ post }) {
                         </div>
                         <div className='mt-5'>
                             {comments.map((comment, index) => (
-                                <Comment key={index} comment={comment} />
+                                <Comment key={index} comment={comment} handleEdited={handleEdited} replyToComment={replyToComment} handleDeleted={handleDeleted} />
                             ))}
                         </div>
                     </div>

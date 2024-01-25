@@ -7,7 +7,7 @@ function Page() {
         <>
             <div className='bg-slate-100 '>
 
-                <div className='grid grid-cols-2'>
+                <div className='grid grid-cols-2 sm:py-11 py-2'>
 
                     <div className='col-span-2 lg:col-span-1'>
 

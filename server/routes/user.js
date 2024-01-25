@@ -24,7 +24,7 @@ router.put("/unfollow/:targetUserId", verifyUser, unfollowUser);
 router.put("/change-cover", verifyUser, changeCover);
 router.put("/change-profile-image", verifyUser, changeProfileImage);
 router.get("/user-name/:userName", verifyUser, getUserByUserName);
-router.get("/search/:query", verifyUser, searchUsers);
+router.get("/search/:query", searchUsers);
 router.get("/:id", getUserById);
 
 export default router;

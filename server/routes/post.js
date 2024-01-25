@@ -3,7 +3,9 @@ import { verifyUser } from "../middleware/verifyUser.js";
 import {
     commentOnPost, createPost, getPost, likePost, getPosts,
     getPostsByUserId, getPostsForFeed,getPostsOfCurrentUser,
-    deletePost, getPostId,getPostForFeed,updatePost
+    deletePost, getPostId,getPostForFeed,updatePost, replyToComment,
+    editComment,
+    deleteComment
 } from "../controllers/post.js";
 
 const router = express.Router();
@@ -18,7 +20,9 @@ router.get("/feed-posts", verifyUser, getPostsForFeed);
 router.get("/feed-post/:id", verifyUser, getPostForFeed);
 router.post("/comment/:postId", verifyUser, commentOnPost);
 router.get("/post", verifyUser, getPosts);
-router.post("/reply/:commentId/comments/:postId", verifyUser, commentOnPost);
+router.post("/reply/:commentId/comments/:postId", verifyUser, replyToComment);
+router.put("/comment/:postId/edit/:commentId", verifyUser, editComment);
+router.delete("/comment/:postId/edit/:commentId", verifyUser, deleteComment);
 router.get("/post/:postId", verifyUser, getPost);
 router.get("/post-id/:postId", verifyUser, getPostId);
 
