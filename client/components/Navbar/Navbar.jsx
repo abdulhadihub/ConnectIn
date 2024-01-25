@@ -10,6 +10,7 @@ import { useCookies } from 'react-cookie';
 import { useUser } from '@/utils/Context/UserContext';
 import { FaUserPlus } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
+import MobileNavbar from './MobileNavbar';
 
 
 function Navbar() {
@@ -29,23 +30,24 @@ function Navbar() {
                 setData(res?.data?.user)
             } catch (error) {
                 console.log(error)
-                
+
             }
         }
         fetchData()
     }
-    , [])
+        , [])
 
 
     return (
         <nav className='h-[50px] fixed w-full bg-white z-[999]'>
-            <div className='grid grid-cols-3 h-full'>
+            {/* desktop navbar */}
+            <div className='hidden md:grid grid-cols-3 h-full'>
                 <div className='flex justify-start items-center mx-5'>
                     <Link href='/feed'>
                         <h2 className='text-2xl font-bold flex items-center'>
                             <div className='text-gray-600'>Connect</div>
                             <div className='bg-blue-500 text-white rounded-md p-1 flex items-center'>
-                                <LuLinkedin  />
+                                <LuLinkedin />
                             </div>
                         </h2>
                     </Link>
@@ -56,7 +58,7 @@ function Navbar() {
                 </div>
 
                 <div className='flex justify-center items-center gap-10'>
-                    <Link href='/feed'  className='mx-3'>
+                    <Link href='/feed' className='mx-3'>
                         <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
                     </Link>
                     <Link href='/find-friend' className='mx-3'>
@@ -64,9 +66,14 @@ function Navbar() {
                     </Link>
                 </div>
                 <div className='flex justify-center items-center'>
-                    {user ?  <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-5 py-2 rounded-md font-bold'>Sign In</button></Link>}
-                   
+                    {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-5 py-2 rounded-md font-bold'>Sign In</button></Link>}
+
                 </div>
+            </div>
+
+            {/* mobile navbar */}
+            <div className='md:hidden'>
+                <MobileNavbar />
             </div>
         </nav>
     )
