@@ -167,7 +167,7 @@ function Post({ post }) {
 
     const replyToComment = async (commentId, reply) => {
         try {
-            const { data } = await axios.put(`${server}/api/reply-comment/${commentId}`, { reply }, {
+            const { data } = await axios.put(`${server}/api/post/reply-comment/${post?._id}/edit/${commentId}`, { replyText: reply }, {
                 headers: {
                     'x-auth-token': cookies['x-auth-token']
                 }
@@ -177,7 +177,8 @@ function Post({ post }) {
                     message: 'Success',
                     description: data?.message,
                 })
-                setComments(comments.map(comment => comment?._id === commentId ? { ...comment, reply } : comment))
+                // setComments(comments.map(comment => comment?._id === commentId ? { ...comment, replies: [...comment?.replies, { reply }] } : comment))
+
             }
             else {
                 notification.error({

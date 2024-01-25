@@ -20,7 +20,7 @@ router.get("/feed-posts", verifyUser, getPostsForFeed);
 router.get("/feed-post/:id", verifyUser, getPostForFeed);
 router.post("/comment/:postId", verifyUser, commentOnPost);
 router.get("/post", verifyUser, getPosts);
-router.post("/reply/:commentId/comments/:postId", verifyUser, replyToComment);
+router.put("/reply-comment/:postId/edit/:commentId", verifyUser, replyToComment);
 router.put("/comment/:postId/edit/:commentId", verifyUser, editComment);
 router.delete("/comment/:postId/edit/:commentId", verifyUser, deleteComment);
 router.get("/post/:postId", verifyUser, getPost);
