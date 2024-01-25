@@ -29,12 +29,12 @@ function Navbar() {
                 setData(res?.data?.user)
             } catch (error) {
                 console.log(error)
-                
+
             }
         }
         fetchData()
     }
-    , [])
+        , [])
 
 
     return (
@@ -45,7 +45,7 @@ function Navbar() {
                         <h2 className='text-2xl font-bold flex items-center'>
                             <div className='text-gray-600'>Connect</div>
                             <div className='bg-blue-500 text-white rounded-md p-1 flex items-center'>
-                                <LuLinkedin  />
+                                <LuLinkedin />
                             </div>
                         </h2>
                     </Link>
@@ -55,17 +55,18 @@ function Navbar() {
                     </label>
                 </div>
 
-                <div className='flex justify-center items-center gap-10'>
-                    <Link href='/feed'  className='mx-3'>
-                        <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
-                    </Link>
-                    <Link href='/find-friend' className='mx-3'>
-                        <FaUserPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
-                    </Link>
-                </div>
+                {user ?
+                    <div className='flex justify-center items-center gap-10'>
+                        <Link href='/feed' className='mx-3'>
+                            <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
+                        </Link>
+                        <Link href='/find-friend' className='mx-3'>
+                            <FaUserPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
+                        </Link>
+                    </div>:<div className='flex justify-center items-center gap-10'></div>}
                 <div className='flex justify-center items-center'>
-                    {user ?  <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-5 py-2 rounded-md font-bold'>Sign In</button></Link>}
-                   
+                    {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-5 py-2 rounded-md font-bold'>Sign In</button></Link>}
+
                 </div>
             </div>
         </nav>

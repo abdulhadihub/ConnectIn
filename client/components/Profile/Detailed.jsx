@@ -13,16 +13,14 @@ import { notification } from 'antd';
 import server from '@/utils/server';
 import Link from 'next/link'
 
-function Post({ post }) {
+const Detailed = ({ post }) => {
+    console.log("here", post)
     const [showComment, setShowComment] = useState(false)
-    const [comments, setComments] = useState(post?.comments)
     const [newComment, setNewComment] = useState('')
-    const [likes, setLikes] = useState(post?.likes)
     const { user, loading, error } = useUserById(post?.user?._id)
     const { user: currentUser } = useUser()
     const { addComment } = useCommentOnPost()
     const { addLike } = useAddLike()
-    const [isLiked, setIsLiked] = useState(post?.isLikedByUser)
 
     const handleAddComment = async (e) => {
         e.preventDefault()
@@ -84,9 +82,16 @@ function Post({ post }) {
             console.log(err)
         }
     }
+    const [likes, setLikes] = useState(post?.likes)
+    const [comments, setComments] = useState(post?.comments)
+    const [isLiked, setIsLiked] = useState(post?.isLikedByUser)
 
+    useEffect(() => {
+        setLikes(post?.likes)
+        setComments(post?.comments?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)))
+        setIsLiked(post?.isLikedByUser)
+    }, [post, loading])
     if (loading) return <div>Loading...</div>
-    if (error) return <div>{error}</div>
 
     return (
         <div className='bg-white shadow-md rounded-md p-3 relative '>
@@ -104,26 +109,13 @@ function Post({ post }) {
                 </div>
             </div>
             <div>
-                <Link href={`/post/${post?._id}`} className='text-lg my-3'>{post?.title}</Link>
+                <div className='text-lg my-3'>{post?.title}</div>
                 <p className='text-sm font-normal text-gray-800 my-5 flex flex-wrap'>
-                    {post?.description?.length > 200 ? post?.description?.slice(0, 150) + '' : post?.description}
+                    {post?.description}
                 </p>
-                <div className='flex justify-end my-2 font-normal'>
-                    <Link href={`/post/${post?._id}`} className='text-blue-600 hover:underline cursor-pointer'>... see more</Link>
-                </div>
                 <div className='w-full h-[300px]'>
                     <img src={`${server}/images/${post?.postImage}`} width={300} height={300} className='object-cover w-full h-full' />
                 </div>
-                {/* <div className='grid grid-cols-3 gap-1'>
-
-                    {postImages.map((image, index) => {
-                        return (
-                            <div key={index}>
-                                <Image src={image} width={200} height={200} className='w-full h-full' />
-                            </div>
-                        )
-                    })}
-                </div> */}
             </div>
 
             <div className='mt-5'>
@@ -150,7 +142,7 @@ function Post({ post }) {
                             </form>
                         </div>
                         <div className='mt-5'>
-                            {comments.map((comment, index) => (
+                            {comments?.map((comment, index) => (
                                 <Comment key={index} comment={comment} />
                             ))}
                         </div>
@@ -161,4 +153,4 @@ function Post({ post }) {
     )
 }
 
-export default Post
+export default Detailed

@@ -36,19 +36,19 @@ function page() {
             <div className='w-full bg-[#f4f2ee]'>
                 <div className='w-[90%] mx-auto'>
                     <div className='grid grid-cols-12 py-5 gap-5'>
-                        <div className='col-span-2'>
+                        <div className='col-span-3'>
                             <UserWidget user={user} />
                         </div>
 
-                        <div className='col-span-7'>
-                            <div className='flex text-sm justify-end my-3'>
+                        <div className='col-span-6'>
+                            {/* <div className='flex text-sm justify-end my-3'>
 
                                 Sort by: <select className='border border-gray-300 rounded-md px-2 py-1 ml-2'>
                                     <option>Top</option>
                                     <option>New</option>
                                 </select>
-                            </div>
-                            <div className='flex flex-col gap-5'>
+                            </div> */}
+                            <div className='flex flex-col'>
                                 {posts?.map((post, index) => (
                                     <Post key={index} post={post} />
                                 ))}
