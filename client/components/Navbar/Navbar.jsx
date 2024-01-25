@@ -11,12 +11,21 @@ import { useUser } from '@/utils/Context/UserContext';
 import { FaPlus, FaUserPlus } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import MobileNavbar from './MobileNavbar';
+import { useRouter } from 'next/navigation';
 
 
 function Navbar() {
     const [data, setData] = useState({})
     const [cookies] = useCookies(['x-auth-token'])
+    const [query, setQuery] = useState('')
     const { user } = useUser()
+    const router = useRouter()
+
+    const handleSearch = (e) => {
+        e.preventDefault()
+        router.push(`/search/${query}`)
+    }
+
 
 
     useEffect(() => {
@@ -51,10 +60,12 @@ function Navbar() {
                             </div>
                         </h2>
                     </Link>
-                    <label className='mx-3 bg-gray-100 flex items-center py-2 px-5 rounded-full'>
-                        <IoSearch className='text-gray-600 text-2xl' />
-                        <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none' type="text" />
-                    </label>
+                    <form onSubmit={handleSearch}>
+                        <label className='mx-3 bg-gray-100 flex items-center py-2 px-5 rounded-full'>
+                            <IoSearch className='text-gray-600 text-2xl' />
+                            <input onChange={(e) => setQuery(e.target.value)} placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none' type="text" />
+                        </label>
+                    </form>
                 </div>
                 {user ?
                     <div className='flex justify-center items-center gap-10'>

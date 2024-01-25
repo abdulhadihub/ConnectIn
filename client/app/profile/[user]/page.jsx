@@ -5,6 +5,7 @@ import React from 'react'
 import { useUserById, useUserByUsername } from '@/utils/Hooks/UseHooks'
 import { useUser } from '@/utils/Context/UserContext'
 import { redirect } from 'next/navigation';
+import isAuth from '@/components/isAuth/isAuth'
 
 const Page = ({ params }) => {
     // const { user, loading, error } = useUserById(params?.user)
@@ -23,4 +24,4 @@ const Page = ({ params }) => {
     )
 }
 
-export default Page
+export default isAuth(Page)

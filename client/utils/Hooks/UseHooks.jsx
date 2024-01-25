@@ -99,7 +99,7 @@ export const useSuggestions = () => {
     const [error, setError] = useState(null)
     const [cookies] = useCookies(['x-auth-token']);
     const [suggestions, setSuggestions] = useState([])
-    
+
 
     useEffect(() => {
         async function getSuggestions() {
@@ -157,7 +157,7 @@ export const useUserByUsername = (username) => {
     useEffect(() => {
         async function getUser() {
             try {
-                const { data } = await axios.get(`${server}/api/user/user-name/${username}`,{
+                const { data } = await axios.get(`${server}/api/user/user-name/${username}`, {
                     headers: {
                         'x-auth-token': cookies['x-auth-token']
                     }
@@ -175,4 +175,31 @@ export const useUserByUsername = (username) => {
     }, [username])
 
     return { user, loading, error }
+}
+
+export const useSearch = (query) => {
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [cookies] = useCookies(['x-auth-token']);
+    const [users, setUsers] = useState([])
+
+    useEffect(() => {
+        async function getUser() {
+            try {
+                const { data } = await axios.get(`${server}/api/user/search/${query}`, {
+                    headers: {
+                        'x-auth-token': cookies['x-auth-token']
+                    }
+                })
+                setUsers(data.users)
+                setLoading(false)
+            } catch (err) {
+                setError(err)
+                setLoading(false)
+            }
+        }
+        getUser()
+    }, [query])
+
+    return { users, loading, error }
 }

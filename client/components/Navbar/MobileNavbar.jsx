@@ -11,6 +11,7 @@ import server from '@/utils/server';
 import Link from 'next/link';
 import { FaPlus, FaUserPlus } from "react-icons/fa6";
 import UserDropdown from './UserDropdown';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -19,8 +20,13 @@ function MobileNavbar() {
     const [data, setData] = useState({})
     const [cookies] = useCookies(['x-auth-token'])
     const { user } = useUser()
+    const [query, setQuery] = useState('')
+    const router = useRouter()
 
-
+    const handleSearch = (e) => {
+        e.preventDefault()
+        router.push(`/search/${query}`)
+    }
 
     const showDrawer = () => {
         setOpen(!isOpen);
@@ -55,10 +61,13 @@ function MobileNavbar() {
                     <div className="col-span-6">
 
                         <div className='flex justify-end items-center'>
-                            <label className='mx-3 bg-gray-100 flex jitems-center py-2 px-3 rounded-full'>
-                                <IoSearch className='text-gray-600 text-md' />
-                                <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 border-none outline-none hover:border hover:border-black  w-[100px]' type="text" />
-                            </label>
+                            <form onSubmit={handleSearch}>
+
+                                <label className='mx-3 bg-gray-100 flex jitems-center py-2 px-3 rounded-full'>
+                                    <IoSearch className='text-gray-600 text-md' />
+                                    <input onChange={(e) => setQuery(e.target.value)} placeholder='Search' className='px-2 text-[14px] bg-gray-100 border-none outline-none hover:border hover:border-black  w-[100px]' type="text" />
+                                </label>
+                            </form>
                         </div>
                     </div>
 
@@ -94,12 +103,6 @@ function MobileNavbar() {
                         <Link href='/create-post' className=''>
                             <FaPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
                         </Link>
-                    </li>
-                    <li>
-                        <label className='mx-3 bg-gray-100 flex items-center py-1 px-2 rounded-sm'>
-                            <IoSearch className='text-gray-600 text-md' />
-                            <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none w-[100px]' type="text" />
-                        </label>
                     </li>
                 </ul>
             </Drawer>}

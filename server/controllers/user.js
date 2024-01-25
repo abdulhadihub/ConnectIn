@@ -236,7 +236,7 @@ export const getUserByUserName = asyncHandler(async (req, res) => {
         const isFollowing = currentUser.following.includes(user._id);
         const isBlocked = currentUser.blockedUsers.includes(user._id);
         const isBlockedBy = user.blockedUsers.includes(currentUser._id);
-        console.log(user,isFollowing, isBlocked, isBlockedBy)
+        console.log(user, isFollowing, isBlocked, isBlockedBy)
         res.status(200).json({ user, isFollowing, isBlocked, isBlockedBy, success: true });
 
     } catch (error) {
@@ -298,6 +298,24 @@ export const suggestUsers = asyncHandler(async (req, res) => {
             _id: { $ne: currentUser._id },
             interests: { $in: currentUser.interests },
         }).select('-password').limit(5);
+
+        res.status(200).json({ users, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error, success: false });
+    }
+});
+
+export const searchUsers = asyncHandler(async (req, res) => {
+    try {
+        const { query } = req.params;
+        const users = await User.find({
+            $or: [
+                { fName: { $regex: query, $options: 'i' } },
+                { lName: { $regex: query, $options: 'i' } },
+                { userName: { $regex: query, $options: 'i' } },
+            ],
+        }).select('-password');
 
         res.status(200).json({ users, success: true });
     } catch (error) {
