@@ -11,7 +11,6 @@ import Link from 'next/link';
 
 const PostItem = ({ data, deletePost }) => {
 
-
     const items = [
         {
             key: '1',
@@ -57,13 +56,13 @@ const PostItem = ({ data, deletePost }) => {
                 <div className='text-sm text-gray-500 px-2'>
                     {data?.description?.length > 200 ? data?.description?.slice(0, 50) + '' : data?.description}
                     <div className='flex justify-end'>
-                        <span className='text-blue-600 hover:underline cursor-pointer'>... see more</span>
+                        <Link href={`/post/${data?._id}`} className='text-blue-600 hover:underline cursor-pointer'>... see more</Link>
                     </div>
                 </div>
                 <div className='my-2' ><img style={{ height: "300px", objectFit: 'fit' }} className='w-[100%]' src={`${server}/images/${data?.postImage}`} alt='imggg' />
                 </div>
                 <div className='px-3'>
-                    <div style={{ borderBottom: "1px solid grey" }} className='flex text-[12px] gap-2 my-2'>
+                    <div  className='flex text-[12px] justify-between my-2'>
                         <div className='flex justify-center'>
                             <AiFillLike size={16} color='blue' className='mx-2' />  Likes {data?.likes?.length}
                         </div>
@@ -71,7 +70,7 @@ const PostItem = ({ data, deletePost }) => {
                             <FaRegCommentDots size={16} color='gray' className='mx-2' />  Comments {data?.comments?.length}
                         </div>
                     </div>
-                    <div className='grid grid-cols-3 px-2 my-2'>
+                    {/* <div className='grid grid-cols-3 px-2 my-2'>
                         <div className='flex flex-col md:flex-row justify-center items-center hover:bg-blue-100 p-2 rounded-full cursor-pointer'>
                             <AiOutlineLike size={20} color='blue' className='mx-2' />
                             <span className='text-sm text-gray-500'>Like</span>
@@ -84,7 +83,7 @@ const PostItem = ({ data, deletePost }) => {
                             <IoShareSocialSharp size={20} color='gray' className='mx-2' />
                             <span className='text-sm text-gray-500'>Share</span>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

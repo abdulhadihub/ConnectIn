@@ -43,7 +43,7 @@ export const getPostId = asyncHandler(async (req, res) => {
             return;
         }
 
-        res.status(200).json({ post, success: true});
+        res.status(200).json({ post, success: true });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error getting post' });
@@ -302,6 +302,38 @@ export const getPostsForFeed = asyncHandler(async (req, res) => {
         res.status(500).json({ error });
     }
 })
+
+export const getPostForFeed = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const post = await Post.findById(req.params.id)
+            .populate('user', '_id email profileImage fName lName userName')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: '_id email profileImage fName lName userName',
+                },
+            })
+            .populate({
+                path: 'likes',
+                select: '_id email profileImage fName lName userName',
+            });
+
+        const isLikedByUser = post.likes.some((like) => like?.userName === user?.userName);
+        const isFollowing = user.following.includes(post.user._id);
+        const formattedPost = {
+            ...post.toObject(),
+            isLikedByUser,
+            isFollowing,
+        };
+        res.status(200).json({ post: formattedPost, success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error });
+    }
+});
+
 
 export const deletePost = asyncHandler(async (req, res) => {
     try {

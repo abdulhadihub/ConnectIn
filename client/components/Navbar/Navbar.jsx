@@ -31,6 +31,7 @@ function Navbar() {
             } catch (error) {
                 console.log(error)
 
+
             }
         }
         fetchData()
@@ -58,7 +59,7 @@ function Navbar() {
                 </div>
 
                 <div className='flex justify-center items-center gap-10'>
-                    <Link href='/feed' className='mx-3'>
+                    <Link href='/feed'  className='mx-3'>
                         <IoMdHome className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
                     </Link>
                     <Link href='/find-friend' className='mx-3'>

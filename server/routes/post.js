@@ -3,7 +3,7 @@ import { verifyUser } from "../middleware/verifyUser.js";
 import {
     commentOnPost, createPost, getPost, likePost, getPosts,
     getPostsByUserId, getPostsForFeed,getPostsOfCurrentUser,
-    deletePost, getPostId
+    deletePost, getPostId,getPostForFeed
 } from "../controllers/post.js";
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.put("/like/:postId", verifyUser, likePost);
 router.get("/user-posts", verifyUser, getPostsOfCurrentUser);
 router.get("/user-posts/:id", getPostsByUserId);
 router.get("/feed-posts", verifyUser, getPostsForFeed);
+router.get("/feed-post/:id", verifyUser, getPostForFeed);
 router.post("/comment/:postId", verifyUser, commentOnPost);
 router.get("/post", verifyUser, getPosts);
 router.post("/reply/:commentId/comments/:postId", verifyUser, commentOnPost);

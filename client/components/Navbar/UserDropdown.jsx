@@ -66,7 +66,7 @@ const UserDropdown = () => {
             <button className='text-gray-500'>
                 {!user?.profileImage ? (
                     <img src='/user.jpg' width={30} height={30} className='rounded-full' />
-                ) : (<img src={`${server}/images/${user?.profileImage}`} width={50} height={50} className='rounded-full' />)}</button>
+                ) : (<img src={`${server}/images/${user?.profileImage}`} width={40} height={40} className='rounded-full' />)}</button>
         </Dropdown>
     )
 }
