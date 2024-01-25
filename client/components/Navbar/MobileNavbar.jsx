@@ -9,7 +9,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import server from '@/utils/server';
 import Link from 'next/link';
-import { FaUserPlus } from "react-icons/fa6";
+import { FaPlus, FaUserPlus } from "react-icons/fa6";
 import UserDropdown from './UserDropdown';
 
 
@@ -72,7 +72,7 @@ function MobileNavbar() {
 
                 </div>
             </div>
-            <Drawer width={150} placement="left" onClose={onClose} open={isOpen} closeIcon={false}>
+            {user && <Drawer width={200} placement="left" onClose={onClose} open={isOpen} closeIcon={false}>
                 <ul className='flex flex-col gap-5  justify-center items-center'>
                     <li>
 
@@ -91,12 +91,18 @@ function MobileNavbar() {
                         </Link>
                     </li>
                     <li>
-                        <Link href='/find-friend' className=''>
-                            <FaUserPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
+                        <Link href='/create-post' className=''>
+                            <FaPlus className='text-3xl text-gray-600 hover:text-blue-500 transition-all cursor-pointer' />
                         </Link>
                     </li>
+                    <li>
+                        <label className='mx-3 bg-gray-100 flex items-center py-1 px-2 rounded-sm'>
+                            <IoSearch className='text-gray-600 text-md' />
+                            <input placeholder='Search' className='px-2 text-[14px] bg-gray-100 outline-none border-none w-[100px]' type="text" />
+                        </label>
+                    </li>
                 </ul>
-            </Drawer>
+            </Drawer>}
         </>
     )
 }
