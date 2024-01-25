@@ -43,6 +43,8 @@ export const registerUser = asyncHandler(async (req, res) => {
                 gender,
                 email,
                 phone,
+                profileImage:'default-user.jpg',
+                userName: email.split('@')[0],
                 password: hashedPassword
             })
             await user.save();
@@ -294,9 +296,11 @@ export const suggestUsers = asyncHandler(async (req, res) => {
             const users = await User.find({ _id: { $ne: currentUser._id } }).select('-password').limit(5);
             return res.status(200).json({ users, success: true });
         }
+        const followersIds = currentUser.followers.map(follower => follower._id);
         const users = await User.find({
-            _id: { $ne: currentUser._id },
+            userName: { $ne: currentUser.userName },
             interests: { $in: currentUser.interests },
+            _id: { $nin: followersIds }, 
         }).select('-password').limit(5);
 
         res.status(200).json({ users, success: true });

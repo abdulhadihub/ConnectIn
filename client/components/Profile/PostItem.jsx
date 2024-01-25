@@ -36,8 +36,8 @@ const PostItem = ({ data, deletePost }) => {
         <div style={{ border: '1px solid grey' }} className='text-sm text-gray-500 rounded-lg'>
             <div className='flex justify-between items-center my-2'>
                 <div className='flex gap-2  px-2'>
-                    <div className='w-[10%]'><img className='w-[100%] rounded-full' src={`${server}/images/${data?.user?.profileImage}`} /></div>
-                    <div className='w-[90%]'>
+                    <div className='w-[30%]'><img width={40} height={40} className='rounded-full' src={`${server}/images/${data?.user?.profileImage}`} /></div>
+                    <div className='w-[70%]'>
                         <div className='text-sm flex text-black font-semibold'>{data?.user?.fName} {data?.user?.lName}</div>
                         <div className='text-xs text-gray-500'> {data?.isEdited ? calculatePostTime(data?.postUpdatedAt) : calculatePostTime(data?.createdAt)} {data?.isEdited && "• Edited"}</div>
                     </div>
