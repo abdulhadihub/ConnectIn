@@ -8,8 +8,10 @@ import { calculatePostTime } from '@/utils/utils';
 import { Dropdown } from 'antd';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import Link from 'next/link';
+import { useUser } from '@/utils/Context/UserContext';
 
 const PostItem = ({ data, deletePost }) => {
+    const { user } = useUser();
 
     const items = [
         {
@@ -40,6 +42,7 @@ const PostItem = ({ data, deletePost }) => {
                         <div className='text-xs text-gray-500'> {data?.isEdited ? calculatePostTime(data?.postUpdatedAt) : calculatePostTime(data?.createdAt)} {data?.isEdited && "• Edited"}</div>
                     </div>
                 </div>
+                {user?._id === data?.user?._id && (
                 <div className='cursor-pointer hover:bg-gray-200 p-2 flex items-center rounded-full'>
                     <Dropdown
                         menu={{
@@ -51,6 +54,7 @@ const PostItem = ({ data, deletePost }) => {
                         <HiDotsVertical color='gray' size={20} />
                     </Dropdown>
                 </div>
+                )}
             </div>
             <div>
                 <div className='text-sm text-gray-500 px-2'>

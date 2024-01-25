@@ -33,7 +33,6 @@ const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isFollowingUser, setIsFollowingUser] = useState(isFollowing);
   const [isBlockedUser, setIsBlockedUser] = useState(isBlocked);
-  const [isBlockedByUser, setIsBlockedByUser] = useState(isBlockedBy);
   const [newUserName, setNewUserName] = useState(user?.userName);
   const [isError, setIsError] = useState(false);
 
@@ -113,6 +112,31 @@ const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
   };
 
   const handleFollow = async () => {
+
+    if (!cookies['x-auth-token']) return notification.error({
+      message: 'Error',
+      description: 'Please Login First',
+    })
+    if (isBlockedByUser) return notification.error({
+      message: 'Error',
+      description: 'You are blocked by this user',
+    })
+    if (isBlockedUser) return notification.error({
+      message: 'Error',
+      description: 'You blocked this user',
+    })
+
+    if (currentUser?.userName === newUserName) return notification.error({
+      message: 'Error',
+      description: 'You cannot follow yourself',
+    })
+
+    if (!currentUser) {
+      return notification.error({
+        message: 'Error',
+        description: 'Please Login First',
+      })
+    }
     try {
       const { data } = await axios.put(`${server}/api/user/follow/${user?._id}`, {}, {
         headers: {
@@ -157,6 +181,53 @@ const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
       })
     }
   }
+
+  const handleBlock = async () => {
+    try {
+      const { data } = await axios.put(`${server}/api/user/block/${user?._id}`, {}, {
+        headers: {
+          'x-auth-token': cookies['x-auth-token']
+        }
+      })
+      if (data?.success) {
+        notification.success({
+          message: 'Success',
+          description: data?.message,
+        })
+        setIsBlockedUser(true)
+      }
+    } catch (error) {
+      console.log(error)
+      notification.error({
+        message: 'Error',
+        description: error?.response?.data?.message,
+      })
+    }
+  }
+
+  const handleUnblock = async () => {
+    try {
+      const { data } = await axios.put(`${server}/api/user/unblock/${user?._id}`, {}, {
+        headers: {
+          'x-auth-token': cookies['x-auth-token']
+        }
+      })
+      if (data?.success) {
+        notification.success({
+          message: 'Success',
+          description: data?.message,
+        })
+        setIsBlockedUser(false)
+      }
+    } catch (error) {
+      console.log(error)
+      notification.error({
+        message: 'Error',
+        description: error?.response?.data?.message,
+      })
+    }
+  }
+  
   return (
     <>
       <div className='sm:mx-36 mx-10 py-6'>
@@ -286,6 +357,26 @@ const Profile = ({ user, isFollowing, isBlocked, isBlockedBy }) => {
               <div className='px-4'>
                 <div className='text-[10px] text-gray-500 break-all  '>
                   <Link className='hover:underline ' target='_blank' href={`${client}/profile/${user?.userName || ""}`}>{client}/profile/{user?.userName}</Link>
+                </div>
+              </div>
+            </div>
+
+            {isBlockedBy && <div className='my-4 text-center py-4 text-red-600 bg-white rounded-lg p-2'>
+              This User Blocked You
+            </div>}
+
+            <div className='my-4 bg-white rounded-lg p-2'>
+              <div className='flex justify-between items-center px-4 my-2'>
+                <div className='text-xl font-semibold'>Block</div>
+
+              </div>
+              <div className='px-4'>
+                <div className='text-[10px] text-gray-500 break-all  '>
+                  {isBlockedUser ? <div onClick={handleUnblock} className='flex items-center  justify-center cursor-pointer hover:bg-blue-100 p-2 px-3 rounded-full text-blue-600 text-sm font-semibold'>
+                    Un Block</div>
+                    :
+                    <div onClick={handleBlock} className='flex items-center justify-center  cursor-pointer hover:bg-red-100 p-2 px-3 rounded-full text-red-600 text-sm font-semibold'>
+                      Block</div>}
                 </div>
               </div>
             </div>

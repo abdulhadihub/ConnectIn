@@ -102,11 +102,42 @@ const EditPost = ({ post, updateData, hidemodal }) => {
                         ]}
                     >
                         <Select mode="tags" style={{ width: '100%' }} placeholder="Select your interests">
-                            <Select.Option value="React">React</Select.Option>
-                            <Select.Option value="Node">Node</Select.Option>
-                            <Select.Option value="MongoDB">MongoDB</Select.Option>
-                            <Select.Option value="Express">Express</Select.Option>
-                            <Select.Option value="JavaScript">JavaScript</Select.Option>
+                        <Select.Option value="Javascript">Javascript</Select.Option>
+              <Select.Option value="React">React</Select.Option>
+              <Select.Option value="Node">Node</Select.Option>
+              <Select.Option value="MongoDB">MongoDB</Select.Option>
+              <Select.Option value="Express">Express</Select.Option>
+              <Select.Option value="Next">Next</Select.Option>
+              <Select.Option value="Tailwind">Tailwind</Select.Option>
+              <Select.Option value="Bootstrap">Bootstrap</Select.Option>
+              <Select.Option value="Material UI">Material UI</Select.Option>
+              <Select.Option value="Ant Design">Ant Design</Select.Option>
+              <Select.Option value="Redux">Redux</Select.Option>
+              <Select.Option value="React Native">React Native</Select.Option>
+              <Select.Option value="Flutter">Flutter</Select.Option>
+              <Select.Option value="Dart">Dart</Select.Option>
+              <Select.Option value="Firebase">Firebase</Select.Option>
+              <Select.Option value="Python">Python</Select.Option>
+              <Select.Option value="Java">Java</Select.Option>
+              <Select.Option value="C++">C++</Select.Option>
+              <Select.Option value="C">C</Select.Option>
+              <Select.Option value="C#">C#</Select.Option>
+              <Select.Option value="PHP">PHP</Select.Option>
+              <Select.Option value="Laravel">Laravel</Select.Option>
+              <Select.Option value="MySQL">MySQL</Select.Option>
+              <Select.Option value="PostgreSQL">PostgreSQL</Select.Option>
+              <Select.Option value="SQL">SQL</Select.Option>
+              <Select.Option value="NoSQL">NoSQL</Select.Option>
+              <Select.Option value="MongoDB">MongoDB</Select.Option>
+              <Select.Option value="GraphQL">GraphQL</Select.Option>
+              <Select.Option value="Apollo">Apollo</Select.Option>
+              <Select.Option value="REST">REST</Select.Option>
+              <Select.Option value="API">API</Select.Option>
+              <Select.Option value="Git">Git</Select.Option>
+              <Select.Option value="GitHub">GitHub</Select.Option>
+              <Select.Option value="GitLab">GitLab</Select.Option>
+              <Select.Option value="BitBucket">BitBucket</Select.Option>
+              <Select.Option value="Jira">Jira</Select.Option>
                         </Select>
 
                     </Form.Item>
