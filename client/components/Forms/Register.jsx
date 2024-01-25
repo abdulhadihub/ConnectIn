@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 const App = () => {
     const [form] = Form.useForm();
     const route = useRouter();
-    const onFinish = async(values) => {
+    const onFinish = async (values) => {
         console.log('Received values of form: ', values);
         try {
             const res = await axios.post(`${server}/api/user/register`, values);
@@ -27,7 +27,7 @@ const App = () => {
                 });
                 form.resetFields();
                 route.push('/login');
-            }else{
+            } else {
                 notification.error({
                     message: 'Error',
                     description: res?.data?.message,
@@ -47,11 +47,10 @@ const App = () => {
             name="register"
             onFinish={onFinish}
             style={{
-                maxWidth: 600,
+                maxWidth: 300,
             }}
             scrollToFirstError
         >
-
             <Form.Item
                 label="First Name"
                 name="fName"
@@ -176,7 +175,7 @@ const App = () => {
                     }),
                 ]}
             >
-                <Input.Password  />
+                <Input.Password />
             </Form.Item>
 
             <Form.Item>
