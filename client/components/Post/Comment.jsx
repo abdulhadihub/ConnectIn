@@ -22,7 +22,7 @@ function Comment({ comment, handleEdited, handleDeleted, replyToComment }) {
     return (
         <>
             <div className='flex mt-5'>
-                <img src={`${server}/images/${user?.profileImage}`} width={30} height={30} className='rounded-full mr-3' />
+                <img src={`${server}/images/${user?.profileImage}`} width={30} height={30} className='object-cover rounded-full mr-3' />
                 <div className='bg-[#f2f2f2] p-3 rounded-sm w-full relative'>
                     <span className='text-[11px] text-gray-500 absolute top-2 right-2'>{calculateTime(comment?.createdAt)}</span>
 
@@ -47,7 +47,7 @@ function Comment({ comment, handleEdited, handleDeleted, replyToComment }) {
                     <div className=' p-2 rounded mt-1 w-[70%]'>
                         {comment?.reply?.map((reply) => (
                             <div className='flex mt-2' key={reply?._id}>
-                                <img src={`${server}/images/${reply?.user?.profileImage}`} width={30} height={30} className='rounded-full mr-3' />
+                                <img src={`${server}/images/${reply?.user?.profileImage}`} width={30} height={30} className='object-cover rounded-full mr-3' />
                                 <div className='bg-[#f2f2f2] p-3 rounded-sm w-full relative'>
                                     <span className='text-[11px] text-gray-500 absolute top-2 right-2'>{calculateTime(reply?.createdAt)}</span>
                                     <h2 className='font-semibold'>{reply?.user?.fName} {reply?.user?.lName}</h2>

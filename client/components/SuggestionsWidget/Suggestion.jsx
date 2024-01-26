@@ -9,8 +9,8 @@ function Suggestion({ user }) {
         <div className='flex bg-white p-2 rounded-lg px-4'>
             <Link className='flex' href={`/profile/${user?.userName}`}>
                 {!user?.profileImage ? (
-                    <img src='/user.jpg' width={50} height={50} className='rounded-full' />
-                ) : (<img src={`${server}/images/${user?.profileImage}`} width={50} height={50} className='rounded-full' />)}
+                    <img src='/user.jpg' width={50} height={50} className='object-cover rounded-full' />
+                ) : (<img src={`${server}/images/${user?.profileImage}`} width={50} height={50} className='object-cover rounded-full' />)}
                 <div className='ml-3'>
                     <p className='font-semibold'>{user?.fName} {user?.lName}</p>
                     <p className='text-gray-500 text-sm'>{user?.userName}</p>

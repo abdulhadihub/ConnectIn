@@ -194,7 +194,7 @@ function Post({ post, reload }) {
                     if (comment?._id === commentId) {
                         if (!comment?.reply) {
                             arr.push(da)
-                        }else{
+                        } else {
                             arr.push(...comment?.reply)
                             arr.push(da)
                         }
@@ -227,7 +227,7 @@ function Post({ post, reload }) {
             </div>
             <div className='flex'>
                 <Link href={`/profile/${user?.userName}`}>
-                    <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
+                    <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='object-cover rounded-full mr-3' />
                 </Link>
                 <div>
                     <Link href={`/profile/${user?.userName}`} className='text-md block'>{user?.fName} {user?.lName}</Link>
@@ -276,7 +276,7 @@ function Post({ post, reload }) {
                     <div>
 
                         <div className='flex mt-5'>
-                            <img src={`${server}/images/${currentUser?.profileImage}`} width={30} height={30} className='rounded-full mr-3' />
+                            <img src={`${server}/images/${currentUser?.profileImage}`} width={30} height={30} className='object-cover rounded-full mr-3' />
                             <form onSubmit={handleAddComment} className='w-[80%]' >
                                 <input value={newComment} onChange={(e) => setNewComment(e.target.value)} type="text" placeholder='Add a comment...' className='w-full outline-none border border-gray-500 rounded-full px-3 py-2' />
                             </form>
