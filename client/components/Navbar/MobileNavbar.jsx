@@ -73,7 +73,7 @@ function MobileNavbar() {
 
                     <div className="col-span-2">
 
-                        <div className='flex mt-[-5px] justify-center items-center'>
+                        <div className='flex justify-center items-center'>
                             {user ? <UserDropdown data={data} /> : <Link href='/login'> <button className='bg-blue-500 text-white px-2 py-1 rounded-md font-bold'>Sign In</button></Link>}
 
                         </div>
