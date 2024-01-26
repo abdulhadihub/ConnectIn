@@ -6,7 +6,7 @@ function Suggestion({ user }) {
 
 
     return (
-        <div className='flex bg-white p-2 rounded-lg px-4'>
+        <div className='flex bg-white p-2 rounded-lg px-4 min-w-[150px]'>
             <Link className='flex' href={`/profile/${user?.userName}`}>
                 {!user?.profileImage ? (
                     <img src='/user.jpg' width={50} height={50} className='object-cover rounded-full' />

@@ -325,7 +325,7 @@ const Profile = ({ user }) => {
       })
     }
   }
-  
+
   const PostList = ({ posts }) => {
     return (
       <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"} gap-7 my-3`}>
@@ -581,7 +581,7 @@ const Profile = ({ user }) => {
           />
         </label>
 
-        <img width={200} className="my-3"
+        <img width={200} className="object-cover my-3"
           src={
             profileImage
               ? URL.createObjectURL(profileImage)
@@ -608,7 +608,7 @@ const Profile = ({ user }) => {
           />
         </label>
 
-        <img width={200} className="my-3"
+        <img width={200} className="object-cover my-3"
           src={
             coverImage
               ? URL.createObjectURL(coverImage)

@@ -36,24 +36,24 @@ const PostItem = ({ data, deletePost }) => {
         <div style={{ border: '1px solid grey' }} className='text-sm text-gray-500 rounded-lg'>
             <div className='flex justify-between items-center my-2'>
                 <div className='flex gap-2  px-2'>
-                    <div className='w-[30%]'><img width={40} height={40} className='rounded-full' src={`${server}/images/${data?.user?.profileImage}`} /></div>
+                    <div className='w-[30%]'><img width={40} height={40} className='object-cover rounded-full' src={`${server}/images/${data?.user?.profileImage}`} /></div>
                     <div className='w-[70%]'>
                         <div className='text-sm flex text-black font-semibold'>{data?.user?.fName} {data?.user?.lName}</div>
                         <div className='text-xs text-gray-500'> {data?.isEdited ? calculatePostTime(data?.postUpdatedAt) : calculatePostTime(data?.createdAt)} {data?.isEdited && "• Edited"}</div>
                     </div>
                 </div>
                 {user?._id === data?.user?._id && (
-                <div className='cursor-pointer hover:bg-gray-200 p-2 flex items-center rounded-full'>
-                    <Dropdown
-                        menu={{
-                            items,
-                        }}
-                        placement="bottom"
-                        arrow
-                    >
-                        <HiDotsVertical color='gray' size={20} />
-                    </Dropdown>
-                </div>
+                    <div className='cursor-pointer hover:bg-gray-200 p-2 flex items-center rounded-full'>
+                        <Dropdown
+                            menu={{
+                                items,
+                            }}
+                            placement="bottom"
+                            arrow
+                        >
+                            <HiDotsVertical color='gray' size={20} />
+                        </Dropdown>
+                    </div>
                 )}
             </div>
             <div>
@@ -63,10 +63,10 @@ const PostItem = ({ data, deletePost }) => {
                         <Link href={`/post/${data?._id}`} className='text-blue-600 hover:underline cursor-pointer'>... see more</Link>
                     </div>
                 </div>
-                <div className='my-2' ><img style={{ height: "300px", objectFit: 'fit' }} className='w-[100%]' src={`${server}/images/${data?.postImage}`} alt='imggg' />
+                <div className='my-2' ><img style={{ height: "300px", objectFit: 'cover' }} className='w-[100%]' src={`${server}/images/${data?.postImage}`} alt='imggg' />
                 </div>
                 <div className='px-3'>
-                    <div  className='flex text-[12px] justify-between my-2'>
+                    <div className='flex text-[12px] justify-between my-2'>
                         <div className='flex justify-center'>
                             <AiFillLike size={16} color='blue' className='mx-2' />  Likes {data?.likes?.length}
                         </div>

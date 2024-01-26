@@ -222,7 +222,7 @@ const Detailed = ({ post }) => {
                     if (comment?._id === commentId) {
                         if (!comment?.reply) {
                             arr.push(da)
-                        }else{
+                        } else {
                             arr.push(...comment?.reply)
                             arr.push(da)
                         }
@@ -253,7 +253,7 @@ const Detailed = ({ post }) => {
             </div>
             <div className='flex'>
                 <Link href={`/profile/${user?.userName}`}>
-                    <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='rounded-full mr-3' />
+                    <img src={`${server}/images/${post?.user?.profileImage}`} width={50} height={50} className='object-cover rounded-full mr-3' />
                 </Link>
                 <div>
                     <Link href={`/profile/${user?.userName}`} className='text-md block'>{user?.fName} {user?.lName}</Link>
@@ -263,14 +263,14 @@ const Detailed = ({ post }) => {
             </div>
             <div>
                 <div className='flex justify-between'>
-                    <div className='text-lg my-3'>{postData?.title}</div>
+                    <div className='text-lg my-1'>{postData?.title}</div>
                     {post?.user?._id === currentUser?._id && <div onClick={() => setIsModalOpen(true)}><FaEdit className='text-xl text-gray-500 cursor-pointer' /></div>}
                 </div>
-                <p className='text-sm font-normal text-gray-800 my-5 flex flex-wrap'>
+                <p className='text-sm font-normal text-gray-800 my-3 flex flex-wrap'>
                     {postData?.description}
                 </p>
-                <div className='w-full h-[600px]'>
-                    <img src={`${server}/images/${postData?.postImage}`} className='object-fit w-full h-full' />
+                <div className='w-full'>
+                    <img src={`${server}/images/${postData?.postImage}`} className='object-cover  w-full h-full' />
                 </div>
 
                 <div className='flex flex-wrap my-4'>
@@ -299,7 +299,7 @@ const Detailed = ({ post }) => {
                     <div>
 
                         <div className='flex mt-5'>
-                            <img src={`${server}/images/${currentUser?.profileImage}`} width={30} height={30} className='rounded-full mr-3' />
+                            <img src={`${server}/images/${currentUser?.profileImage}`} width={30} height={30} className='object-cover rounded-full mr-3' />
                             <form onSubmit={handleAddComment} className='w-[85%]' >
                                 <input value={newComment} onChange={(e) => setNewComment(e.target.value)} type="text" placeholder='Add a comment...' className='w-full outline-none border border-gray-500 rounded-full px-5 py-2' />
                             </form>

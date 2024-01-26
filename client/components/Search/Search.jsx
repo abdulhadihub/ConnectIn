@@ -28,7 +28,7 @@ function Search({ users, loading, error }) {
             <div className='sm:mx-40 mx-10 py-5'>
                 <div className='flex flex-col items-center'>
                     <div className='text-2xl font-bold text-gray-600'>Search Results</div>
-                    <div className='mt-5'>
+                    <div className='flex flex-col justify-center items-center gap-5 mt-5'>
                         {users?.map((user) => (
                             <Suggestion key={user?._id} user={user} />
                         ))}
